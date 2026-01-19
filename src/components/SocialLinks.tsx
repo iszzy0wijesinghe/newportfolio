@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { profile } from "../content/profile";
-import { Github, Linkedin, Mail, Copy } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 
 type Item = { label: string; href: string; icon: JSX.Element };
 
@@ -31,7 +31,7 @@ export default function SocialLinks() {
         </a>
       ))}
 
-      {/* Email: mailto + fallback */}
+      
       <button
         type="button"
         onClick={(e) => {
