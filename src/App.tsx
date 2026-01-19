@@ -4,10 +4,21 @@ import { routes } from "./app/routes";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import A11yFab from "./components/A11yFab";
+import ScrollToTop from "./components/ScrollToTop";
 
-type Settings = { theme: "light" | "dark"; hc: boolean; fs: number; reduceMotion: boolean };
+type Settings = {
+  theme: "light" | "dark";
+  hc: boolean;
+  fs: number;
+  reduceMotion: boolean;
+};
 
-const DEFAULTS: Settings = { theme: "dark", hc: false, fs: 16, reduceMotion: false };
+const DEFAULTS: Settings = {
+  theme: "dark",
+  hc: false,
+  fs: 16,
+  reduceMotion: false,
+};
 
 export default function App() {
   const element = useRoutes(routes);
@@ -35,11 +46,21 @@ export default function App() {
 
   return (
     <>
-      <a className="skip-link" href="#content">Skip to content</a>
+      <a className="skip-link" href="#content">
+        Skip to content
+      </a>
 
+      <ScrollToTop />
       <Header />
-      <main id="content" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
-        <Suspense fallback={<div className="text-sm text-[rgb(var(--muted))]">Loading…</div>}>
+      <main
+        id="content"
+        className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10"
+      >
+        <Suspense
+          fallback={
+            <div className="text-sm text-[rgb(var(--muted))]">Loading…</div>
+          }
+        >
           {element}
         </Suspense>
       </main>
