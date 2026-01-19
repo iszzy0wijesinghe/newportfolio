@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Brand + A11y variables */
+:root{
+  --bg: 255 255 255;
+  --fg: 15 23 42;       /* slate-900 */
+  --muted: 71 85 105;   /* slate-600 */
+  --card: 248 250 252;  /* slate-50 */
+  --border: 226 232 240;/* slate-200 */
+  --accent: 79 70 229;  /* indigo-600 */
+  --fs: 16px;
+}
+.dark{
+  --bg: 2 6 23;         /* slate-950 */
+  --fg: 226 232 240;    /* slate-200 */
+  --muted: 148 163 184; /* slate-400 */
+  --card: 15 23 42;     /* slate-900 */
+  --border: 30 41 59;   /* slate-800 */
+  --accent: 129 140 248;/* indigo-400 */
+}
+
+/* High contrast mode */
+/* High contrast mode (makes it obvious) */
+.hc{
+  --bg: 255 255 255;
+  --fg: 0 0 0;
+  --muted: 0 0 0;
+  --card: 255 255 255;
+  --border: 0 0 0;
+  --accent: 0 0 0;
+}
+.dark.hc{
+  --bg: 0 0 0;
+  --fg: 255 255 255;
+  --muted: 255 255 255;
+  --card: 0 0 0;
+  --border: 255 255 255;
+  --accent: 255 255 255;
+}
+
+
+html{ font-size: var(--fs); }
+
+body{
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+}
+
+/* Skip link (keyboard accessibility) */
+.skip-link{
+  position:absolute; left:-999px; top:auto;
+}
+.skip-link:focus{
+  left: 1rem; top: 1rem; z-index: 50;
+  background: rgb(var(--fg)); color: rgb(var(--bg));
+  padding: .6rem .8rem; border-radius: .75rem;
+}
+
+/* Optional: nicer selection color */
+::selection{
+  background: rgba(var(--accent), .25);
+}
+
+/* Utilities we used in components */
+@layer utilities {
+  .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+
+  .line-clamp-2{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .reveal-base{
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 500ms ease, transform 500ms ease;
+  }
+  .reveal-in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,258 @@
+/** @format */
+
+/* Uses your site's CSS variables:
+   --bg, --fg, --muted, --card, --border (like your other pages)
+*/
+
+.project-detail {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 16px 70px;
+  color: rgb(var(--fg));
+}
+
+/* Header */
+.project-header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 16px;
+
+  background: rgb(var(--card));
+  border: 1px solid rgb(var(--border));
+}
+
+.project-header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.25;
+  letter-spacing: 0.2px;
+}
+
+.category {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: rgb(var(--muted));
+}
+
+/* Buttons / links */
+.project-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.github-btn,
+.live-demo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 10px 14px;
+
+  border-radius: 14px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+
+  transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.github-btn:hover,
+.live-demo-btn:hover {
+  background: rgb(var(--card));
+  transform: translateY(-1px);
+}
+
+.github-btn:active,
+.live-demo-btn:active {
+  transform: translateY(0px);
+}
+
+/* A11y focus */
+.github-btn:focus-visible,
+.live-demo-btn:focus-visible,
+.back-btn:focus-visible,
+.hire-btn:focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.7); /* accessible focus ring */
+  outline-offset: 3px;
+}
+
+/* Sections */
+.section-block {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 16px;
+
+  background: rgb(var(--card));
+  border: 1px solid rgb(var(--border));
+}
+
+.section-block h2 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+}
+
+.section-block p {
+  margin: 0;
+  color: rgb(var(--muted));
+  line-height: 1.7;
+  font-size: 14.5px;
+}
+
+/* Tech stack list */
+.tech-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+}
+
+.tech-list li {
+  font-size: 14px;
+  color: rgb(var(--muted));
+}
+
+/* Highlights */
+.project-highlights-section .highlight-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.highlight-point {
+  font-size: 14px;
+  color: rgb(var(--muted));
+  line-height: 1.6;
+}
+
+/* Images */
+.image-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.image-row img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--bg));
+}
+
+/* Ensure images don't cause layout jump */
+.image-row img[loading="lazy"] {
+  content-visibility: auto;
+}
+
+/* Code blocks (if you later add folderStructure) */
+.project-detail pre {
+  margin: 0;
+  overflow: auto;
+  padding: 14px;
+  border-radius: 14px;
+
+  background: rgb(var(--bg));
+  border: 1px solid rgb(var(--border));
+}
+
+.project-detail code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 13px;
+  color: rgb(var(--fg));
+}
+
+/* Footer buttons */
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.back-btn {
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 14px;
+
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.back-btn:hover {
+  background: rgb(var(--card));
+  transform: translateY(-1px);
+}
+
+.hire-btn {
+  min-height: 40px;
+  padding: 10px 14px;
+  border-radius: 14px;
+
+  border: 1px solid rgb(var(--border));
+  background: rgb(var(--fg));
+  color: rgb(var(--bg));
+
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.hire-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .github-btn,
+  .live-demo-btn,
+  .back-btn,
+  .hire-btn {
+    transition: none !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .project-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-links {
+    justify-content: flex-start;
+  }
+
+  .tech-list {
+    grid-template-columns: 1fr;
+  }
+
+  .image-row {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-buttons {
+    justify-content: flex-start;
+  }
+}
