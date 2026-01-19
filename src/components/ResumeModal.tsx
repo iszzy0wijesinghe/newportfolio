@@ -9,7 +9,12 @@ type Props = {
   title?: string;
 };
 
-export default function ResumeModal({ open, onClose, pdfUrl, title = "Resume" }: Props) {
+export default function ResumeModal({
+  open,
+  onClose,
+  pdfUrl,
+  title = "Resume",
+}: Props) {
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const lastActiveEl = useRef<HTMLElement | null>(null);
 
@@ -47,7 +52,15 @@ export default function ResumeModal({ open, onClose, pdfUrl, title = "Resume" }:
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="relative w-full max-w-5xl rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--bg))] shadow-soft overflow-hidden"
+        className="
+    relative w-full
+    max-w-5xl
+    h-[92vh] sm:h-auto
+    sm:max-h-[92vh]
+    rounded-2xl sm:rounded-3xl
+    border border-[rgb(var(--border))]
+    bg-[rgb(var(--bg))] shadow-soft overflow-hidden
+  "
       >
         <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[rgb(var(--border))] bg-[rgb(var(--card))]">
           <div className="min-w-0">
@@ -88,15 +101,13 @@ export default function ResumeModal({ open, onClose, pdfUrl, title = "Resume" }:
           </div>
         </div>
 
-        <div className="p-4 bg-[rgb(var(--bg))]">
+        <div className="p-3 sm:p-4 bg-[rgb(var(--bg))] h-[calc(92vh-64px)] sm:h-auto">
           <PdfViewer url={pdfUrl} />
         </div>
       </div>
     </div>
   );
 }
-
-
 
 // import { useEffect, useRef } from "react";
 // import { Download, ExternalLink, X } from "lucide-react";

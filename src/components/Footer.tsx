@@ -20,10 +20,7 @@ export default function Footer() {
         <div className="grid gap-8 md:grid-cols-[1.2fr_.8fr] items-start">
           <div>
             <div className="font-semibold tracking-tight">{profile.brand}</div>
-            <p className="mt-2 text-sm text-[rgb(var(--muted))] max-w-sm">
-              Minimal, fast, job-ready portfolio. Built to feel smooth on any
-              device.
-            </p>
+            <p className="mt-2 text-sm text-[rgb(var(--muted))] max-w-sm"></p>
 
             <div className="mt-4">
               <SocialLinks />
@@ -34,40 +31,30 @@ export default function Footer() {
             <div className="text-sm font-semibold">Pages</div>
 
             <nav aria-label="Footer pages" className="mt-3">
-              <div className="overflow-x-auto scrollbar-none">
-                <ul className="flex items-center flex-nowrap whitespace-nowrap text-sm">
-                  {pages.map((p, idx) => {
-                    const active = pathname === p.to;
+              <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-x-4 gap-y-2 text-sm md:justify-end">
+                {pages.map((p) => {
+                  const active = pathname === p.to;
 
-                    return (
-                      <li key={p.to} className="flex items-center">
-                        <Link
-                          to={p.to}
-                          aria-current={active ? "page" : undefined}
-                          className={[
-                            "transition",
-                            active
-                              ? "text-[rgb(var(--fg))]"
-                              : "text-[rgb(var(--muted))] hover:text-[rgb(var(--fg))]",
-                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(var(--accent),0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--bg))] rounded-md px-1",
-                          ].join(" ")}
-                        >
-                          {p.label}
-                        </Link>
-
-                        {idx < pages.length - 1 && (
-                          <span
-                            aria-hidden="true"
-                            className="mx-2 text-[rgb(var(--border))]"
-                          >
-                            |
-                          </span>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+                  return (
+                    <li key={p.to} className={active ? "font-medium" : ""}>
+                      <Link
+                        to={p.to}
+                        aria-current={active ? "page" : undefined}
+                        className={[
+                          "inline-block rounded-md px-1 py-1 transition",
+                          active
+                            ? "text-[rgb(var(--fg))]"
+                            : "text-[rgb(var(--muted))] hover:text-[rgb(var(--fg))]",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(var(--accent),0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--bg))]",
+                          "md:text-right md:w-full",
+                        ].join(" ")}
+                      >
+                        {p.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             </nav>
           </div>
         </div>
