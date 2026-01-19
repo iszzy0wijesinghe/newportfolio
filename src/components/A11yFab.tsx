@@ -32,7 +32,8 @@ export default function A11yFab() {
       </button>
 
       {open && (
-        <div className="mt-2 w-[360px] max-w-[92vw] rounded-2xl shadow-soft border border-[rgb(var(--border))] bg-[rgb(var(--bg))] p-3">
+        // <div className="mt-2 w-[360px] max-w-[92vw] rounded-2xl shadow-soft border border-[rgb(var(--border))] bg-[rgb(var(--bg))] p-3">
+        <div className="fixed bottom-20 left-4 right-4 sm:left-auto sm:right-5 sm:w-[380px] max-h-[75vh] overflow-auto rounded-2xl shadow-soft border border-[rgb(var(--border))] bg-[rgb(var(--bg))] p-4">
           <div className="text-xs text-[rgb(var(--muted))] mb-2">
             Accessibility
           </div>

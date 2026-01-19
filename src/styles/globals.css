@@ -44,6 +44,8 @@ html{ font-size: var(--fs); }
 body{
   background: rgb(var(--bg));
   color: rgb(var(--fg));
+  overflow-x: hidden;
+
 }
 
 /* Skip link (keyboard accessibility) */
