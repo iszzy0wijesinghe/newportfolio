@@ -148,7 +148,7 @@ export default function A11yFab() {
           </button>
 
           <div className="mt-2 text-[11px] text-[rgb(var(--muted))]">
-            Contrast and Motion show their state clearly (ON/OFF).
+            Your eyes deserve comfort. Customize text, contrast, and motion anytime. Click anywhere outside this panel to close it.
           </div>
         </div>
       )}
