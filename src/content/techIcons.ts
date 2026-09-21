@@ -1,175 +1,153 @@
-/** @format */
+
+const DEVICON =
+  "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/icons";
+
+const GITHUB =
+  "https://raw.githubusercontent.com/devicons/devicon/v2.16.0/icons";
 
 const ICONS: Record<string, string> = {
-  // Languages
-  TypeScript: "https://cdn.simpleicons.org/typescript",
-  JavaScript: "https://cdn.simpleicons.org/javascript",
-  "C#": "https://cdn.simpleicons.org/csharp",
-  SQL: "https://cdn.simpleicons.org/mysql",
-  PHP: "https://cdn.simpleicons.org/php",
-  Dart: "https://cdn.simpleicons.org/dart",
-  Java: "https://cdn.simpleicons.org/openjdk",
-  Kotlin: "https://cdn.simpleicons.org/kotlin",
+  // Programming languages
+  TypeScript: "typescript/typescript-original.svg",
+  JavaScript: "javascript/javascript-original.svg",
+  "C#": "csharp/csharp-original.svg",
+  Python: "python/python-original.svg",
+  PHP: "php/php-original.svg",
+  Dart: "dart/dart-original.svg",
+  Java: "java/java-original.svg",
+  Kotlin: "kotlin/kotlin-original.svg",
 
-  // Frameworks / Libraries
-  React: "https://cdn.simpleicons.org/react",
-  "React.js": "https://cdn.simpleicons.org/react",
-  Vite: "https://cdn.simpleicons.org/vite",
-  "ASP.NET Core": "https://cdn.simpleicons.org/dotnet",
-  "EF Core": "https://cdn.simpleicons.org/dotnet",
-  Laravel: "https://cdn.simpleicons.org/laravel",
-  "Vue.js": "https://cdn.simpleicons.org/vuedotjs",
-  WordPress: "https://cdn.simpleicons.org/wordpress",
-  "Redux Toolkit": "https://cdn.simpleicons.org/redux",
-  "RTK Query": "https://cdn.simpleicons.org/redux",
-  "Redux Saga": "https://cdn.simpleicons.org/redux",
-  "Redux Toolkit & RTK Query": "https://cdn.simpleicons.org/redux",
+  // Frontend
+  React: "react/react-original.svg",
+  "React.js": "react/react-original.svg",
+  Vite: "vitejs/vitejs-original.svg",
+  "Vue.js": "vuejs/vuejs-original.svg",
+  "Tailwind CSS": "tailwindcss/tailwindcss-original.svg",
+  "Redux Toolkit": "redux/redux-original.svg",
+  "RTK Query": "redux/redux-original.svg",
+  "Redux Saga": "redux/redux-original.svg",
 
-  // Project tech (extra)
-  "Node.js": "https://cdn.simpleicons.org/nodedotjs",
-  "Express.js": "https://cdn.simpleicons.org/express",
-  MongoDB: "https://cdn.simpleicons.org/mongodb",
-  "Mongo DB": "https://cdn.simpleicons.org/mongodb",
-  "socket.io": "https://cdn.simpleicons.org/socketdotio",
-  "Three.js": "https://cdn.simpleicons.org/threedotjs",
-  "Tailwind.css": "https://cdn.simpleicons.org/tailwindcss",
-  "Tailwind CSS": "https://cdn.simpleicons.org/tailwindcss",
-  Flutter: "https://cdn.simpleicons.org/flutter",
-  Lottie: "https://cdn.simpleicons.org/lottiefiles",
-  Fl_chart: "https://cdn.simpleicons.org/flutter",
-  SharedPreferences: "https://cdn.simpleicons.org/android",
-  "Android XML": "https://cdn.simpleicons.org/android",
-  "Android Studio": "https://cdn.simpleicons.org/androidstudio",
-  Figma: "https://cdn.simpleicons.org/figma",
-  "Adobe Photoshop": "https://cdn.simpleicons.org/adobephotoshop",
-  "Adobe Illustrator": "https://cdn.simpleicons.org/adobeillustrator",
-  "Framer Motion": "https://cdn.simpleicons.org/framer",
+  // Backend
+  "ASP.NET Core": "dot-net/dot-net-original.svg",
+  "ASP.NET MVC": "dot-net/dot-net-original.svg",
+  "EF Core": "dot-net/dot-net-original.svg",
+  "Entity Framework Core": "dot-net/dot-net-original.svg",
+  Laravel: "laravel/laravel-original.svg",
+  "Node.js": "nodejs/nodejs-original.svg",
+  "Express.js": "express/express-original.svg",
+  WordPress: "wordpress/wordpress-original.svg",
 
   // Databases
-  "SQL Server": "https://cdn.simpleicons.org/microsoftsqlserver",
-  "MS SQL Server": "https://cdn.simpleicons.org/microsoftsqlserver",
-  PostgreSQL: "https://cdn.simpleicons.org/postgresql",
-  MySQL: "https://cdn.simpleicons.org/mysql",
+  "Microsoft SQL Server":
+    "microsoftsqlserver/microsoftsqlserver-original.svg",
+  "SQL Server":
+    "microsoftsqlserver/microsoftsqlserver-original.svg",
+  PostgreSQL: "postgresql/postgresql-original.svg",
+  MySQL: "mysql/mysql-original.svg",
+  MongoDB: "mongodb/mongodb-original.svg",
+  Redis: "redis/redis-original.svg",
 
-  // Tools
-  Git: "https://cdn.simpleicons.org/git",
-  TortoiseGit: "https://cdn.simpleicons.org/git",
-  Postman: "https://cdn.simpleicons.org/postman",
-  "Swagger / OpenAPI": "https://cdn.simpleicons.org/swagger",
-  "VS Code": "https://cdn.simpleicons.org/visualstudiocode",
-  "Visual Studio": "https://cdn.simpleicons.org/visualstudio",
-  "IntelliJ IDEA": "https://cdn.simpleicons.org/intellijidea",
-  "Azure DevOps": "https://cdn.simpleicons.org/azuredevops",
-  DBeaver: "https://cdn.simpleicons.org/databricks",
+  // Cloud & DevOps
+  AWS:
+    "amazonwebservices/amazonwebservices-original-wordmark.svg",
+  "Microsoft Azure": "azure/azure-original.svg",
+  "Azure DevOps": "azuredevops/azuredevops-original.svg",
+
+  // Mobile
+  Flutter: "flutter/flutter-original.svg",
+  "Android Studio": "androidstudio/androidstudio-original.svg",
+
+  // Development tools
+  Git: "git/git-original.svg",
+  TortoiseGit: "git/git-original.svg",
+  Postman: "postman/postman-original.svg",
+  "Swagger / OpenAPI": "swagger/swagger-original.svg",
+  "VS Code": "vscode/vscode-original.svg",
+  "Visual Studio": "visualstudio/visualstudio-original.svg",
+  "IntelliJ IDEA": "intellij/intellij-original.svg",
+  Figma: "figma/figma-original.svg",
+
+  // Additional project technologies
+  "Socket.IO": "socketio/socketio-original.svg",
+  "socket.io": "socketio/socketio-original.svg",
+  "Three.js": "threejs/threejs-original.svg",
+  "Framer Motion": "framermotion/framermotion-original.svg",
 };
 
-const norm = (s: string) =>
-  s
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .replace(/[._]/g, "."); // keep dots consistent
+const LOCAL_ICONS: Record<string, string> = {
+  // Database management tools
+  HeidiSQL: "/tech-icons/heidisql.jpg",
+  DBeaver: "/tech-icons/dbeaver.jpg",
+
+  // Adobe Creative Cloud applications
+  "Adobe Photoshop": "/tech-icons/adobe-photoshop.jpg",
+  "Adobe Illustrator": "/tech-icons/adobe-illustrator.jpg",
+  "Adobe InDesign": "/tech-icons/adobe-indesign.jpg",
+  "Adobe Premiere Pro": "/tech-icons/adobe-premiere-pro.jpg",
+  "Adobe After Effects": "/tech-icons/adobe-after-effects.jpg",
+  "Adobe Media Encoder": "/tech-icons/adobe-media-encoder.jpg",
+  "Adobe Firefly": "/tech-icons/adobe-firefly.jpg",
+  "Adobe Creative Cloud": "/tech-icons/adobe-creative-cloud.jpg",
+};
 
 const ALIASES: Record<string, string> = {
-  "react js": "React.js",
-  "react.js": "React.js",
+  "c sharp": "C#",
+  csharp: "C#",
+  mssql: "Microsoft SQL Server",
+  "ms sql": "Microsoft SQL Server",
+  "ms sql server": "Microsoft SQL Server",
+  "mssql server": "Microsoft SQL Server",
+  "sql server": "Microsoft SQL Server",
+  "amazon aws": "AWS",
+  "amazon web services": "AWS",
+  azure: "Microsoft Azure",
+  azuredevops: "Azure DevOps",
+  "visual studio code": "VS Code",
+  vscode: "VS Code",
+  "heidi sql": "HeidiSQL",
+  "heidgi sql": "HeidiSQL",
+  "heidgu sql": "HeidiSQL",
+  "mongo db": "MongoDB",
+  vue: "Vue.js",
+  "react js": "React",
   "node js": "Node.js",
-  "node.js": "Node.js",
-  "express js": "Express.js",
-  "express.js": "Express.js",
-  "mongo db": "Mongo DB",
-  "mongodb": "MongoDB",
-  "socket io": "socket.io",
-  "socket.io": "socket.io",
-  "three js": "Three.js",
-  "three.js": "Three.js",
-  "tailwind css": "Tailwind CSS",
-  "tailwind.css": "Tailwind.css",
-  "ms sql server": "MS SQL Server",
-  "mssql server": "MS SQL Server",
+  "premiere pro": "Adobe Premiere Pro",
+  "after effects": "Adobe After Effects",
+  "media encoder": "Adobe Media Encoder",
+  photoshop: "Adobe Photoshop",
+  illustrator: "Adobe Illustrator",
+  indesign: "Adobe InDesign",
+  firefly: "Adobe Firefly",
+  "creative cloud": "Adobe Creative Cloud",
 };
 
-export function getTechIconUrl(label: string): string | undefined {
-  const raw = label.trim();
-  if (!raw) return undefined;
-
-  if (ICONS[raw]) return ICONS[raw];
-
-  const key = norm(raw);
-  const aliased = ALIASES[key];
-  if (aliased && ICONS[aliased]) return ICONS[aliased];
-
-  // try by normalized matching to existing keys
-  const directKey = Object.keys(ICONS).find((k) => norm(k) === key);
-  if (directKey) return ICONS[directKey];
-
-  return undefined;
+function normalize(value: string): string {
+  return value.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
+export function getTechIconUrls(label: string): string[] {
+  const normalized = normalize(label);
 
+  const canonical =
+    ALIASES[normalized] ??
+    Object.keys({ ...ICONS, ...LOCAL_ICONS }).find(
+      (key) => normalize(key) === normalized
+    ) ??
+    label.trim();
 
-// /** @format */
+  const local = LOCAL_ICONS[canonical];
+  if (local) return [local];
 
-// // Use SimpleIcons CDN with an explicit color so icons are visible on dark backgrounds.
-// // URL format: https://cdn.simpleicons.org/<slug>/<hexColor>
+  const file = ICONS[canonical];
+  if (!file) return [];
 
-// type IconMeta = { slug: string; color?: string };
+  return [
+    `${DEVICON}/${file}`,
+    `${GITHUB}/${file}`,
+  ];
+}
 
-// export const techIconMeta: Record<string, IconMeta> = {
-//   // Languages
-//   TypeScript: { slug: "typescript", color: "3178C6" },
-//   JavaScript: { slug: "javascript", color: "F7DF1E" },
-//   "C#": { slug: "csharp", color: "239120" },
-//   SQL: { slug: "mysql", color: "4479A1" }, // generic SQL fallback
-//   PHP: { slug: "php", color: "777BB4" },
-//   Dart: { slug: "dart", color: "0175C2" },
-//   Java: { slug: "openjdk", color: "ED8B00" },
-//   Kotlin: { slug: "kotlin", color: "7F52FF" },
-
-//   // Frameworks / libraries
-//   React: { slug: "react", color: "61DAFB" },
-//   Vite: { slug: "vite", color: "646CFF" },
-//   "ASP.NET Core": { slug: "dotnet", color: "512BD4" },
-//   "EF Core": { slug: "dotnet", color: "512BD4" },
-//   Laravel: { slug: "laravel", color: "FF2D20" },
-//   "Vue.js": { slug: "vuedotjs", color: "42B883" },
-//   WordPress: { slug: "wordpress", color: "21759B" },
-//   "Redux Toolkit": { slug: "redux", color: "764ABC" },
-//   "RTK Query": { slug: "redux", color: "764ABC" },
-//   "Redux Saga": { slug: "redux", color: "764ABC" },
-
-//   // Databases
-//   "SQL Server": { slug: "microsoftsqlserver", color: "CC2927" },
-//   PostgreSQL: { slug: "postgresql", color: "4169E1" },
-//   MongoDB: { slug: "mongodb", color: "47A248" },
-//   MySQL: { slug: "mysql", color: "4479A1" },
-
-//   // Tools
-//   Git: { slug: "git", color: "F05032" },
-//   TortoiseGit: { slug: "git", color: "F05032" }, // fallback
-//   Postman: { slug: "postman", color: "FF6C37" },
-//   "Swagger / OpenAPI": { slug: "swagger", color: "85EA2D" },
-//   "VS Code": { slug: "visualstudiocode", color: "007ACC" },
-//   "Visual Studio": { slug: "visualstudio", color: "5C2D91" },
-//   "IntelliJ IDEA": { slug: "intellijidea", color: "000000" },
-//   "Android Studio": { slug: "androidstudio", color: "3DDC84" },
-//   "Azure DevOps": { slug: "azuredevops", color: "0078D7" },
-//   DBeaver: { slug: "dbeaver", color: "6E56CF" }, // if this ever fails, it will just hide
-// };
-
-// const FALLBACK_COLOR_DARK = "E2E8F0"; // slate-200 (visible on dark)
-// const FALLBACK_COLOR_LIGHT = "0F172A"; // slate-900 (visible on light)
-
-// export function getTechIconUrl(label: string) {
-//   const key = label.trim();
-//   const meta = techIconMeta[key];
-//   if (!meta) return undefined;
-
-//   // ensure visibility if a meta doesn't have a brand color
-//   const isDark =
-//     typeof document !== "undefined" &&
-//     document.documentElement.classList.contains("dark");
-
-//   const color = meta.color ?? (isDark ? FALLBACK_COLOR_DARK : FALLBACK_COLOR_LIGHT);
-//   return `https://cdn.simpleicons.org/${meta.slug}/${color}`;
-// }
+export function getTechIconUrl(
+  label: string
+): string | undefined {
+  return getTechIconUrls(label)[0];
+}

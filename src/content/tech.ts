@@ -1,31 +1,80 @@
-export type TechGroup = { title: string; items: string[] };
+
+export type TechGroup = {
+  title: string;
+  items: string[];
+};
 
 export const techStack: TechGroup[] = [
   {
-    title: "Languages",
-    items: ["TypeScript", "JavaScript", "C#", "SQL", "PHP", "Dart", "Java", "Kotlin"],
+    title: "Programming Languages",
+    items: [
+      "TypeScript",
+      "JavaScript",
+      "C#",
+      "Python",
+      "SQL",
+      "PHP",
+      "Dart",
+      "Java",
+      "Kotlin",
+    ],
   },
   {
-    title: "Frameworks",
+    title: "Frontend & State Management",
     items: [
       "React",
       "Vite",
-      "ASP.NET Core",
-      "EF Core",
-      "Laravel",
       "Vue.js",
-      "WordPress",
-      "Redux Toolkit", 
-      "RTK Query", 
+      "Tailwind CSS",
+      "Redux Toolkit",
+      "RTK Query",
       "Redux Saga",
     ],
   },
   {
-    title: "Databases",
-    items: ["SQL Server", "PostgreSQL", "MongoDB", "MySQL"],
+    title: "Backend & Frameworks",
+    items: [
+      "ASP.NET Core",
+      "Entity Framework Core",
+      "Laravel",
+      "Node.js",
+      "Express.js",
+      "WordPress",
+    ],
   },
   {
-    title: "Tools",
+    title: "Relational Databases",
+    items: [
+      "Microsoft SQL Server",
+      "PostgreSQL",
+      "MySQL",
+    ],
+  },
+  {
+    title: "NoSQL & Caching",
+    items: [
+      "MongoDB",
+      "Redis",
+    ],
+  },
+  {
+    title: "Cloud & DevOps",
+    items: [
+      "AWS",
+      "Microsoft Azure",
+      "Azure DevOps",
+      "Cloud Computing",
+    ],
+  },
+  {
+    title: "Mobile Development",
+    items: [
+      "Flutter",
+      "Android Studio",
+    ],
+  },
+  {
+    title: "Development Tools",
     items: [
       "Git",
       "TortoiseGit",
@@ -34,9 +83,22 @@ export const techStack: TechGroup[] = [
       "VS Code",
       "Visual Studio",
       "IntelliJ IDEA",
-      "Android Studio",
-      "Azure DevOps",
       "DBeaver",
+      "HeidiSQL",
+    ],
+  },
+  {
+    title: "Design, Video & Creative Tools",
+    items: [
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Adobe InDesign",
+      "Adobe Premiere Pro",
+      "Adobe After Effects",
+      "Adobe Media Encoder",
+      "Adobe Firefly",
+      "Adobe Creative Cloud",
+      "Figma",
     ],
   },
 ];

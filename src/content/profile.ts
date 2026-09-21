@@ -1,21 +1,28 @@
+
 export const profile = {
   brand: "iszzy.",
   name: "Isindu Wijesinghe",
-  role: "Full-Stack Developer",
+  role: "Associate Software Engineer",
+  company: "LAUGFS Holdings",
+  promotedSince: "March 2026",
   location: "Sri Lanka",
   district: "Colombo",
-  tagline: "I build clean, fast, job-ready web apps with great UX.",
+  tagline:
+    "Associate Software Engineer at LAUGFS Holdings, combining software engineering, design, and creative thinking to build meaningful digital experiences.",
   taglines: [
-    "I build clean web apps with great UX.",
-    "I craft fast, responsive interfaces that feel seamless.",
-    "I design scalable codebases with real-world architecture.",
-    "I turn ideas into polished products — performance first.",
-    "I ship modern UI with accessibility built-in.",
+    "I build modern enterprise applications.",
+    "I turn ideas into real digital products.",
+    "I develop scalable full-stack solutions.",
+    "I combine creative thinking with engineering.",
+    "I build software with purpose and precision.",
   ],
   resumeUrl: "/resume.pdf",
   socials: {
-    github: "https://github.com/iszzy0wijesinghe",
-    linkedin: "https://www.linkedin.com/in/isindu-wijesinghe-152513289?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-    email: "isinduyuwaneka@gmail.com",
+    github:
+      "https://github.com/iszzy0wijesinghe",
+    linkedin:
+      "https://www.linkedin.com/in/isindu-wijesinghe-152513289",
+    email:
+      "isinduyuwaneka@gmail.com",
   },
 };
