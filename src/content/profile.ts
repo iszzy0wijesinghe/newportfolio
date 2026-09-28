@@ -16,7 +16,7 @@ export const profile = {
     "I combine creative thinking with engineering.",
     "I build software with purpose and precision.",
   ],
-  resumeUrl: "/resume.pdf",
+resumeUrl: "/resume.pdf",
   socials: {
     github:
       "https://github.com/iszzy0wijesinghe",

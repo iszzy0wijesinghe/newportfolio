@@ -63,15 +63,12 @@ export default function ResumeModal({
   "
       >
         <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-[rgb(var(--border))] bg-[rgb(var(--card))]">
-          <div className="min-w-0">
-           
-            
-          </div>
+          <div className="min-w-0"></div>
 
           <div className="flex items-center gap-2">
             <a
               href={pdfUrl}
-              download
+              download="Isindu_Wijesinghe_Software_Engineering_CV.pdf"
               className="inline-flex items-center gap-2 rounded-xl bg-[rgb(var(--fg))] text-[rgb(var(--bg))] px-3 py-2 text-sm hover:opacity-90"
             >
               <Download size={16} />
