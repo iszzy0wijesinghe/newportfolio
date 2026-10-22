@@ -8,7 +8,17 @@ import "./Home.css";
 
 gsap.registerPlugin(ScrollTrigger, Observer);
 
-const PORTRAIT_IMAGE = "/iszzyimage.webp";
+const PORTRAIT_IMAGES = [
+  "/iszzyimage.webp",
+  "/iszzydecission.webp",
+  "/iszzymic.webp"
+];
+
+function getPortraitIndex(scene: number) {
+  if (scene <= 2) return 0;
+  if (scene <= 4) return 1;
+  return 2;
+}
 
 const statements = [
   {
@@ -81,125 +91,290 @@ const dimensions = [
   }
 ];
 
-/**
- * Controlled, discrete storytelling. Native page scrolling is suspended only
- * while a pinned chapter is active. A gesture changes ONE complete scene;
- * the document is released only at the first/last scene boundary.
- */
+type PinnedStoryOptions = {
+  section: HTMLElement;
+  panels: HTMLElement[];
+  onChange?: (index: number) => void;
+  portraits?: (HTMLImageElement | null)[];
+};
+
 function createPinnedStory({
   section,
   panels,
   onChange,
-  portrait
-}: {
-  section: HTMLElement;
-  panels: HTMLElement[];
-  onChange?: (index: number) => void;
-  portrait?: HTMLImageElement | null;
-}) {
+  portraits
+}: PinnedStoryOptions) {
   if (panels.length < 2) return;
 
   const last = panels.length - 1;
+
   let current = 0;
   let busy = false;
   let active = false;
-  let lastMoveAt = 0;
-  let gestureQuietTimer: ReturnType<typeof setTimeout> | undefined;
-  let animation: gsap.core.Timeline | undefined;
-  let trigger: ScrollTrigger;
-  const gestureGap = 850;
-  let entryFrame = 0;
-  const portraitZoom = 1.018; // Restrained 1.8% camera push, never an enlarging-body effect.
   let releasing = false;
+  let lastMoveAt = 0;
+  let activePortraitIndex = 0;
+
+  let gestureQuietTimer: ReturnType<typeof setTimeout> | undefined;
   let releaseTimer: ReturnType<typeof setTimeout> | undefined;
 
-  gsap.set(panels, { autoAlpha: 0, y: 0, pointerEvents: "none" });
-  gsap.set(panels[0], { autoAlpha: 1, pointerEvents: "auto" });
+  let animation: gsap.core.Timeline | undefined;
+  let trigger: ScrollTrigger;
+
+  let entryFrame = 0;
+
+  const gestureGap = 850;
+  const portraitZoom = 1.018;
+
+  const portraitElements = (portraits ?? []).filter(
+    (image): image is HTMLImageElement => image !== null
+  );
+
+  gsap.set(panels, {
+    autoAlpha: 0,
+    y: 0,
+    pointerEvents: "none"
+  });
+
+  gsap.set(panels[0], {
+    autoAlpha: 1,
+    pointerEvents: "auto"
+  });
+
+  if (portraitElements.length) {
+    gsap.set(portraitElements, {
+      autoAlpha: 0,
+      scale: 1,
+      y: 0
+    });
+
+    gsap.set(portraitElements[0], {
+      autoAlpha: 1
+    });
+  }
+
   onChange?.(0);
+
+  const animatePortrait = (scene: number, immediate = false) => {
+    if (!portraitElements.length) return;
+
+    const nextPortraitIndex = getPortraitIndex(scene);
+    const previousPortrait = portraitElements[activePortraitIndex];
+    const nextPortrait = portraitElements[nextPortraitIndex];
+
+    if (!nextPortrait) return;
+
+    const progress = scene / last;
+
+    const targetScale =
+      1 + progress * (portraitZoom - 1);
+
+    const targetY = -progress * 9;
+
+    if (immediate) {
+      gsap.killTweensOf(portraitElements);
+
+      gsap.set(portraitElements, {
+        autoAlpha: 0,
+        scale: 1,
+        y: 0
+      });
+
+      gsap.set(nextPortrait, {
+        autoAlpha: 1,
+        scale: targetScale,
+        y: targetY
+      });
+
+      activePortraitIndex = nextPortraitIndex;
+      return;
+    }
+
+    if (nextPortraitIndex !== activePortraitIndex) {
+      gsap.killTweensOf(portraitElements);
+
+      if (previousPortrait) {
+        gsap.to(previousPortrait, {
+          autoAlpha: 0,
+          scale: 1.012,
+          y: -5,
+          duration: 0.9,
+          ease: "power2.inOut",
+          overwrite: true
+        });
+      }
+
+      gsap.fromTo(
+        nextPortrait,
+        {
+          autoAlpha: 0,
+          scale: 1.025,
+          y: 12
+        },
+        {
+          autoAlpha: 1,
+          scale: targetScale,
+          y: targetY,
+          duration: 1.2,
+          ease: "power2.out",
+          overwrite: true
+        }
+      );
+
+      activePortraitIndex = nextPortraitIndex;
+    } else {
+      gsap.to(nextPortrait, {
+        scale: targetScale,
+        y: targetY,
+        duration: 2.2,
+        ease: "sine.inOut",
+        overwrite: true
+      });
+    }
+  };
 
   const show = (next: number, immediate = false) => {
     next = gsap.utils.clamp(0, last, next);
+
     if (next === current && !immediate) return;
+
     const old = current;
     current = next;
+
     animation?.kill();
     gsap.killTweensOf(panels);
-    gsap.set(panels, { autoAlpha: 0, y: 0, pointerEvents: "none" });
-    const incoming = panels[next];
+
     if (immediate) {
-      gsap.set(incoming, { autoAlpha: 1, pointerEvents: "auto" });
+      gsap.set(panels, {
+        autoAlpha: 0,
+        y: 0,
+        pointerEvents: "none"
+      });
+
+      gsap.set(panels[next], {
+        autoAlpha: 1,
+        pointerEvents: "auto"
+      });
+
       busy = false;
     } else {
       busy = true;
+
       const outgoing = panels[old];
+      const incoming = panels[next];
       const direction = next > old ? 1 : -1;
-      gsap.set(outgoing, { autoAlpha: 1 });
-      animation = gsap.timeline({ onComplete: () => { busy = false; } });
-      animation.to(outgoing, {
-        autoAlpha: 0, y: direction * -14, duration: 0.28, ease: "power2.in"
+
+      gsap.set(panels, {
+        autoAlpha: 0,
+        y: 0,
+        pointerEvents: "none"
       });
-      animation.fromTo(incoming,
-        { autoAlpha: 0, y: direction * 20 },
-        { autoAlpha: 1, y: 0, duration: 0.58, ease: "power3.out" },
+
+      gsap.set(outgoing, {
+        autoAlpha: 1,
+        y: 0
+      });
+
+      gsap.set(incoming, {
+        autoAlpha: 0,
+        y: direction * 20
+      });
+
+      animation = gsap.timeline({
+        onComplete: () => {
+          busy = false;
+        }
+      });
+
+      animation.to(outgoing, {
+        autoAlpha: 0,
+        y: direction * -14,
+        duration: 0.28,
+        ease: "power2.in"
+      });
+
+      animation.to(
+        incoming,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.58,
+          ease: "power3.out"
+        },
         "+=0.04"
       );
-      animation.set(incoming, { pointerEvents: "auto" });
+
+      animation.set(incoming, {
+        pointerEvents: "auto"
+      });
     }
-    if (portrait) gsap.to(portrait, {
-      scale: 1 + (next / last) * (portraitZoom - 1),
-      y: -(next / last) * 9,
-      duration: 2.2, ease: "sine.inOut", overwrite: true
-    });
+
+    animatePortrait(next, immediate);
     onChange?.(next);
   };
 
-  const getHeader = () => parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue("--header-height")
-  ) || 80;
+  const getHeader = () => {
+    return (
+      parseFloat(
+        getComputedStyle(
+          document.documentElement
+        ).getPropertyValue("--header-height")
+      ) || 80
+    );
+  };
 
   const enter = (fromBelow: boolean) => {
     if (active || releasing) return;
+
     active = true;
     lastMoveAt = 0;
+
     show(fromBelow ? last : 0, true);
-    // Hold the section at the pin start before native scroll can pass it.
-    // The longer pin runway protects the chapter from trackpad momentum.
+
     observer.enable();
+
     cancelAnimationFrame(entryFrame);
+
     entryFrame = requestAnimationFrame(() => {
-      if (active && !releasing) trigger.scroll(trigger.start + 2);
+      if (active && !releasing) {
+        trigger.scroll(trigger.start + 2);
+      }
     });
   };
 
   const leave = (direction: number) => {
     if (releasing) return;
+
     releasing = true;
     active = false;
     busy = false;
+
     observer.disable();
+
     animation?.progress(1);
-    if (gestureQuietTimer) clearTimeout(gestureQuietTimer);
+
+    if (gestureQuietTimer) {
+      clearTimeout(gestureQuietTimer);
+    }
+
     cancelAnimationFrame(entryFrame);
 
-    // IMPORTANT: Never disable or refresh the pin during a handoff.
-    // Removing pinSpacing changes the document's geometry and caused
-    // philosophy/contact to be skipped, especially in reverse scrolling.
-    // Move just outside the EXISTING pin interval. The next/previous
-    // ordinary section stays in its correct natural document position.
-    const destination = direction > 0
-      ? trigger.end + 3
-      : Math.max(0, trigger.start - 3);
-    window.scrollTo({ top: destination, behavior: "instant" });
+    const destination =
+      direction > 0
+        ? trigger.end + 3
+        : Math.max(0, trigger.start - 3);
 
-    // Allow the native page to scroll after the handoff. The short guard
-    // absorbs residual trackpad events without disabling ScrollTrigger.
+    window.scrollTo({
+      top: destination,
+      behavior: "instant"
+    });
+
     releaseTimer = setTimeout(() => {
       releasing = false;
       lastMoveAt = performance.now();
     }, 550);
   };
 
-  // Emergency escape for interruptions such as tab switching or route changes.
   const onVisibilityChange = () => {
     if (document.hidden) {
       busy = false;
@@ -207,7 +382,11 @@ function createPinnedStory({
       lastMoveAt = 0;
     }
   };
-  document.addEventListener("visibilitychange", onVisibilityChange);
+
+  document.addEventListener(
+    "visibilitychange",
+    onVisibilityChange
+  );
 
   const observer = Observer.create({
     target: window,
@@ -216,76 +395,143 @@ function createPinnedStory({
     tolerance: 18,
     wheelSpeed: 1,
     allowClicks: true,
+
     onChangeY: (self) => {
       if (!active || releasing) return;
-      if (gestureQuietTimer) clearTimeout(gestureQuietTimer);
-      gestureQuietTimer = setTimeout(() => { lastMoveAt = 0; }, 300);
+
+      if (gestureQuietTimer) {
+        clearTimeout(gestureQuietTimer);
+      }
+
+      gestureQuietTimer = setTimeout(() => {
+        lastMoveAt = 0;
+      }, 300);
+
       const now = performance.now();
-      if (busy || (lastMoveAt && now - lastMoveAt < gestureGap)) return;
+
+      if (
+        busy ||
+        (lastMoveAt && now - lastMoveAt < gestureGap)
+      ) {
+        return;
+      }
+
       const direction = self.deltaY > 0 ? 1 : -1;
+
       lastMoveAt = now;
-      if ((direction > 0 && current === last) ||
-          (direction < 0 && current === 0)) {
+
+      if (
+        (direction > 0 && current === last) ||
+        (direction < 0 && current === 0)
+      ) {
         leave(direction);
         return;
       }
+
       show(current + direction);
     }
   });
+
   observer.disable();
 
   const onEscape = (event: KeyboardEvent) => {
-    if (event.key === "Escape" && active) leave(current === last ? 1 : -1);
+    if (event.key === "Escape" && active) {
+      leave(current === last ? 1 : -1);
+    }
   };
+
   window.addEventListener("keydown", onEscape);
 
   trigger = ScrollTrigger.create({
     trigger: section,
+
     start: () => `top top+=${getHeader()}`,
-    // A six-pixel pin runway was easy to cross in a single trackpad event.
-    // Give the observer a real capture zone; scene changes stay gesture-driven.
-    end: () => `+=${Math.max(480, window.innerHeight)}`,
+
+    end: () =>
+      `+=${Math.max(480, window.innerHeight)}`,
+
     pin: true,
     pinSpacing: true,
     anticipatePin: 1,
     invalidateOnRefresh: true,
+
     onEnter: () => enter(false),
     onEnterBack: () => enter(true),
-    // The observer owns the story while pinned. The trigger must never
-    // forcibly re-enter after a deliberate exit.
-    onLeave: () => { if (active && !releasing) trigger.scroll(trigger.end - 2); },
-    onLeaveBack: () => { if (active && !releasing) trigger.scroll(trigger.start + 2); }
+
+    onLeave: () => {
+      if (active && !releasing) {
+        trigger.scroll(trigger.end - 2);
+      }
+    },
+
+    onLeaveBack: () => {
+      if (active && !releasing) {
+        trigger.scroll(trigger.start + 2);
+      }
+    }
   });
 
-  // Recover a chapter only when its true pin boundary is visible.
-  // Do not activate while the previous chapter is being released.
   const recoverEntry = () => {
     if (active || releasing || busy) return;
+
     const top = section.getBoundingClientRect().top;
+
     if (Math.abs(top - getHeader()) <= 15) {
       enter(window.scrollY > trigger.end);
     }
   };
-  window.addEventListener("scroll", recoverEntry, { passive: true });
-  // Activate the first chapter on initial page load. Otherwise the first
-  // wheel gesture only enters the ScrollTrigger and feels like a dead scroll.
+
+  window.addEventListener(
+    "scroll",
+    recoverEntry,
+    { passive: true }
+  );
+
   const activateInitialChapter = () => {
-    if (active || window.scrollY > trigger.start + 4) return;
+    if (
+      active ||
+      window.scrollY > trigger.start + 4
+    ) {
+      return;
+    }
+
     const bounds = section.getBoundingClientRect();
-    const header = parseFloat(getComputedStyle(document.documentElement)
-      .getPropertyValue("--header-height")) || 80;
-    if (Math.abs(bounds.top - header) < 12) enter(false);
+
+    if (
+      Math.abs(bounds.top - getHeader()) < 12
+    ) {
+      enter(false);
+    }
   };
+
   requestAnimationFrame(activateInitialChapter);
 
-  // Context cleanup is explicit because Observer is not a ScrollTrigger.
   return () => {
-    if (gestureQuietTimer) clearTimeout(gestureQuietTimer);
-    if (releaseTimer) clearTimeout(releaseTimer);
-    document.removeEventListener("visibilitychange", onVisibilityChange);
-    window.removeEventListener("keydown", onEscape);
+    if (gestureQuietTimer) {
+      clearTimeout(gestureQuietTimer);
+    }
+
+    if (releaseTimer) {
+      clearTimeout(releaseTimer);
+    }
+
+    document.removeEventListener(
+      "visibilitychange",
+      onVisibilityChange
+    );
+
+    window.removeEventListener(
+      "keydown",
+      onEscape
+    );
+
+    window.removeEventListener(
+      "scroll",
+      recoverEntry
+    );
+
     cancelAnimationFrame(entryFrame);
-    window.removeEventListener("scroll", recoverEntry);
+
     observer.kill();
     animation?.kill();
     trigger.kill();
@@ -295,31 +541,156 @@ function createPinnedStory({
 function DimensionVisual({ index }: { index: number }) {
   const lines = [
     <div className="home-code-window" key="code">
-      <div className="home-code-bar"><i /><i /><i /><span>portfolio.tsx</span></div>
-      <div className="home-code-lines" aria-hidden="true">
-        <span><b>01</b><em>const</em> engineer = {'{'}</span>
-        <span><b>02</b>  mindset: <strong>"build"</strong>,</span>
-        <span><b>03</b>  focus: <strong>"solve"</strong>,</span>
-        <span><b>04</b>  ideas: projects.map(</span>
-        <span><b>05</b>    idea =&gt; <em>create</em>(idea)</span>
-        <span><b>06</b>  )</span>
-        <span><b>07</b>{'}'}; <i className="home-code-cursor" /></span>
+      <div className="home-code-bar">
+        <i />
+        <i />
+        <i />
+        <span>portfolio.tsx</span>
       </div>
-      <div className="home-code-status">● BUILD SUCCESSFUL <span>100%</span></div>
+
+      <div
+        className="home-code-lines"
+        aria-hidden="true"
+      >
+        <span>
+          <b>01</b>
+          <em>const</em> engineer = {"{"}
+        </span>
+
+        <span>
+          <b>02</b> mindset: <strong>"build"</strong>,
+        </span>
+
+        <span>
+          <b>03</b> focus: <strong>"solve"</strong>,
+        </span>
+
+        <span>
+          <b>04</b> ideas: projects.map(
+        </span>
+
+        <span>
+          <b>05</b> idea =&gt; <em>create</em>(idea)
+        </span>
+
+        <span>
+          <b>06</b> )
+        </span>
+
+        <span>
+          <b>07</b>
+          {"}"}; <i className="home-code-cursor" />
+        </span>
+      </div>
+
+      <div className="home-code-status">
+        ● BUILD SUCCESSFUL <span>100%</span>
+      </div>
     </div>,
-    <div className="home-venture" key="venture"><span className="home-venture-node home-venture-one">IDEA</span><span className="home-venture-connector" /><span className="home-venture-node home-venture-two">BUILD</span><span className="home-venture-connector" /><span className="home-venture-node home-venture-three">GROW</span><span className="home-venture-pulse" /></div>,
-    <div className="home-creative-canvas" key="creative"><div className="home-creative-grid"/><div className="home-creative-frame"><span>FORM / FUNCTION</span><div className="home-creative-circle"/><div className="home-creative-square"/></div><div className="home-creative-cursor">✦</div></div>,
-    <div className="home-strategy" key="strategy"><div className="home-strategy-axis"/><svg viewBox="0 0 360 240" fill="none" aria-hidden="true"><path d="M22 202 L92 160 L152 178 L218 100 L280 116 L340 32" stroke="white" strokeWidth="2" strokeDasharray="450" className="home-strategy-path"/><g fill="white"><circle cx="22" cy="202" r="4"/><circle cx="92" cy="160" r="4"/><circle cx="152" cy="178" r="4"/><circle cx="218" cy="100" r="4"/><circle cx="280" cy="116" r="4"/><circle cx="340" cy="32" r="5"/></g></svg><span>INSIGHT → DIRECTION → IMPACT</span></div>,
-    <div className="home-educator" key="educator"><div className="home-educator-source">KNOWLEDGE</div><div className="home-educator-stem"/><div className="home-educator-branches"><span>LEARN</span><span>SHARE</span><span>GROW</span></div><div className="home-educator-caption">IDEAS MULTIPLY WHEN SHARED</div></div>
+
+    <div className="home-venture" key="venture">
+      <span className="home-venture-node home-venture-one">
+        IDEA
+      </span>
+
+      <span className="home-venture-connector" />
+
+      <span className="home-venture-node home-venture-two">
+        BUILD
+      </span>
+
+      <span className="home-venture-connector" />
+
+      <span className="home-venture-node home-venture-three">
+        GROW
+      </span>
+
+      <span className="home-venture-pulse" />
+    </div>,
+
+    <div className="home-creative-canvas" key="creative">
+      <div className="home-creative-grid" />
+
+      <div className="home-creative-frame">
+        <span>FORM / FUNCTION</span>
+        <div className="home-creative-circle" />
+        <div className="home-creative-square" />
+      </div>
+
+      <div className="home-creative-cursor">
+        ✦
+      </div>
+    </div>,
+
+    <div className="home-strategy" key="strategy">
+      <div className="home-strategy-axis" />
+
+      <svg
+        viewBox="0 0 360 240"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M22 202 L92 160 L152 178 L218 100 L280 116 L340 32"
+          stroke="white"
+          strokeWidth="2"
+          strokeDasharray="450"
+          className="home-strategy-path"
+        />
+
+        <g fill="white">
+          <circle cx="22" cy="202" r="4" />
+          <circle cx="92" cy="160" r="4" />
+          <circle cx="152" cy="178" r="4" />
+          <circle cx="218" cy="100" r="4" />
+          <circle cx="280" cy="116" r="4" />
+          <circle cx="340" cy="32" r="5" />
+        </g>
+      </svg>
+
+      <span>
+        INSIGHT → DIRECTION → IMPACT
+      </span>
+    </div>,
+
+    <div className="home-educator" key="educator">
+      <div className="home-educator-source">
+        KNOWLEDGE
+      </div>
+
+      <div className="home-educator-stem" />
+
+      <div className="home-educator-branches">
+        <span>LEARN</span>
+        <span>SHARE</span>
+        <span>GROW</span>
+      </div>
+
+      <div className="home-educator-caption">
+        IDEAS MULTIPLY WHEN SHARED
+      </div>
+    </div>
   ];
-  return <div className={`home-dimension-visual home-visual-${index + 1}`} aria-hidden="true">{lines[index]}</div>;
+
+  return (
+    <div
+      className={`home-dimension-visual home-visual-${index + 1}`}
+      aria-hidden="true"
+    >
+      {lines[index]}
+    </div>
+  );
 }
 
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const openingRef = useRef<HTMLElement>(null);
   const dimensionsRef = useRef<HTMLElement>(null);
-  const portraitRef = useRef<HTMLImageElement>(null);
+
+  const portraitRefs = useRef<
+    (HTMLImageElement | null)[]
+  >([]);
+
   const openingCounterRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -327,7 +698,9 @@ export default function Home() {
     const opening = openingRef.current;
     const dimensionSection = dimensionsRef.current;
 
-    if (!root || !opening || !dimensionSection) return;
+    if (!root || !opening || !dimensionSection) {
+      return;
+    }
 
     const reducedMotion =
       window.matchMedia(
@@ -345,17 +718,23 @@ export default function Home() {
     }
 
     const context = gsap.context(() => {
-      const openingPanels = gsap.utils.toArray<HTMLElement>(
-        ".home-opening-slide", opening
-      );
-      const dimensionPanels = gsap.utils.toArray<HTMLElement>(
-        ".home-dimension-panel", dimensionSection
-      );
+      const openingPanels =
+        gsap.utils.toArray<HTMLElement>(
+          ".home-opening-slide",
+          opening
+        );
+
+      const dimensionPanels =
+        gsap.utils.toArray<HTMLElement>(
+          ".home-dimension-panel",
+          dimensionSection
+        );
 
       const destroyOpening = createPinnedStory({
         section: opening,
         panels: openingPanels,
-        portrait: portraitRef.current,
+        portraits: portraitRefs.current,
+
         onChange: (index) => {
           if (openingCounterRef.current) {
             openingCounterRef.current.textContent =
@@ -369,28 +748,41 @@ export default function Home() {
         panels: dimensionPanels
       });
 
-      gsap.utils.toArray<HTMLElement>(".home-reveal", root).forEach((element) => {
-        gsap.fromTo(element,
-          { autoAlpha: 0, y: 18 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 90%",
-              once: true
-            }
-          }
-        );
-      });
+      gsap.utils
+        .toArray<HTMLElement>(
+          ".home-reveal",
+          root
+        )
+        .forEach((element) => {
+          gsap.fromTo(
+            element,
+            {
+              autoAlpha: 0,
+              y: 18
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out",
 
-      // Editorial dark-to-light reveal. Scrubbed only for the section's palette,
-      // never for the controlled story scenes or their scroll locking.
-      const ending = root.querySelector<HTMLElement>(".home-ending");
+              scrollTrigger: {
+                trigger: element,
+                start: "top 90%",
+                once: true
+              }
+            }
+          );
+        });
+
+      const ending =
+        root.querySelector<HTMLElement>(
+          ".home-ending"
+        );
+
       if (ending) {
-        gsap.fromTo(ending,
+        gsap.fromTo(
+          ending,
           {
             "--ending-bg": "#0d0d0d",
             "--ending-fg": "#f5f5f5",
@@ -403,6 +795,7 @@ export default function Home() {
             "--ending-muted": "#626262",
             "--ending-line": "#111111",
             ease: "none",
+
             scrollTrigger: {
               trigger: ending,
               start: "top 85%",
@@ -414,22 +807,50 @@ export default function Home() {
         );
       }
 
-      const image = portraitRef.current;
-      const refresh = () => ScrollTrigger.refresh();
-      if (image && !image.complete) image.addEventListener("load", refresh, { once: true });
+      const images = portraitRefs.current.filter(
+        (image): image is HTMLImageElement =>
+          image !== null
+      );
+
+      const refresh = () => {
+        ScrollTrigger.refresh();
+      };
+
+      images.forEach((image) => {
+        if (!image.complete) {
+          image.addEventListener(
+            "load",
+            refresh,
+            { once: true }
+          );
+        }
+      });
+
       requestAnimationFrame(refresh);
+
       return () => {
-        image?.removeEventListener("load", refresh);
+        images.forEach((image) => {
+          image.removeEventListener(
+            "load",
+            refresh
+          );
+        });
+
         destroyOpening?.();
         destroyDimensions?.();
       };
     }, root);
 
-    return () => context.revert();
+    return () => {
+      context.revert();
+    };
   }, []);
 
   return (
-    <div className="isindu-home-v2" ref={rootRef}>
+    <div
+      className="isindu-home-v2"
+      ref={rootRef}
+    >
       <section
         className="home-opening"
         ref={openingRef}
@@ -437,19 +858,42 @@ export default function Home() {
         <div className="home-opening-inner">
           <div className="home-opening-top">
             <span>ISINDU WIJESINGHE</span>
-            <span>ONE MIND. MANY DIMENSIONS.</span>
+
+            <span>
+              ONE MIND. MANY DIMENSIONS.
+            </span>
           </div>
 
           <div className="home-opening-stage">
             <div className="home-portrait-wrap">
-              <img
-                ref={portraitRef}
-                src={PORTRAIT_IMAGE}
-                alt="Isindu Wijesinghe"
-                className="home-portrait"
-                loading="eager"
-                fetchPriority="high"
-              />
+              <div className="home-portrait-stack">
+                {PORTRAIT_IMAGES.map(
+                  (image, index) => (
+                    <img
+                      key={image}
+                      ref={(element) => {
+                        portraitRefs.current[index] =
+                          element;
+                      }}
+                      src={image}
+                      alt={
+                        index === 0
+                          ? "Isindu Wijesinghe"
+                          : ""
+                      }
+                      aria-hidden={index !== 0}
+                      className="home-portrait home-portrait-layer"
+                      loading="eager"
+                      fetchPriority={
+                        index === 0
+                          ? "high"
+                          : "auto"
+                      }
+                      draggable={false}
+                    />
+                  )
+                )}
+              </div>
 
               <span className="home-portrait-side">
                 BEYOND A SINGLE DEFINITION
@@ -462,7 +906,9 @@ export default function Home() {
                   SOFTWARE ENGINEER / ENTREPRENEUR / CREATIVE
                 </p>
 
-                <p className="home-hello">Hello, I'm</p>
+                <p className="home-hello">
+                  Hello, I'm
+                </p>
 
                 <h1>
                   Isindu
@@ -533,12 +979,23 @@ export default function Home() {
           </div>
 
           <div className="home-opening-bottom">
-            <span>PERSONAL PORTFOLIO / 2026</span>
+            <span>
+              PERSONAL PORTFOLIO / 2026
+            </span>
 
             <div>
-              <span ref={openingCounterRef}>01 / 07</span>
-              <span>SCROLL TO EXPLORE</span>
-              <ArrowDown size={15} strokeWidth={1.4} />
+              <span ref={openingCounterRef}>
+                01 / 07
+              </span>
+
+              <span>
+                SCROLL TO EXPLORE
+              </span>
+
+              <ArrowDown
+                size={15}
+                strokeWidth={1.4}
+              />
             </div>
           </div>
         </div>
@@ -546,8 +1003,6 @@ export default function Home() {
 
       <section className="home-philosophy">
         <div className="home-container">
-
-
           <div className="home-philosophy-grid">
             <div className="home-reveal">
               <p className="home-eyebrow">
@@ -593,18 +1048,23 @@ export default function Home() {
       >
         <div className="home-dimensions-inner">
           <div className="home-dimensions-top">
-            <span className="home-dimensions-kicker">FIVE DIMENSIONS</span>
+            <span className="home-dimensions-kicker">
+              FIVE DIMENSIONS
+            </span>
 
-            <span>FIVE PERSPECTIVES. ONE JOURNEY.</span>
+            <span>
+              FIVE PERSPECTIVES. ONE JOURNEY.
+            </span>
           </div>
 
           <div className="home-dimensions-stage">
-            {dimensions.map((dimension) => (
+            {dimensions.map((dimension, index) => (
               <article
                 className="home-dimension-panel"
                 key={dimension.number}
               >
-                <DimensionVisual index={dimensions.indexOf(dimension)} />
+                <DimensionVisual index={index} />
+
                 <div className="home-dimension-content">
                   <span className="home-dimension-number">
                     {dimension.number} / 05
@@ -636,16 +1096,19 @@ export default function Home() {
           </div>
 
           <div className="home-dimensions-bottom">
-            <span>ISINDU WIJESINGHE</span>
-            <span>CONTINUE THE JOURNEY ↓</span>
+            <span>
+              ISINDU WIJESINGHE
+            </span>
+
+            <span>
+              CONTINUE THE JOURNEY ↓
+            </span>
           </div>
         </div>
       </section>
 
       <section className="home-ending">
         <div className="home-container">
-
-
           <div className="home-ending-content home-reveal">
             <p className="home-eyebrow">
               THE NEXT CHAPTER IS YOURS
@@ -668,6 +1131,7 @@ export default function Home() {
                 className="home-ending-link"
               >
                 Get in touch
+
                 <ArrowUpRight
                   size={20}
                   strokeWidth={1.4}
