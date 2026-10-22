@@ -1,36 +1,60 @@
-import { type PropsWithChildren, useEffect, useRef, useState } from "react";
-import clsx from "clsx";
 
-export default function Reveal({ children, className }: PropsWithChildren<{ className?: string }>) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [inView, setInView] = useState(false);
+import {
+  type PropsWithChildren,
+  useEffect,
+  useRef,
+  useState
+} from "react";
+
+type Props = PropsWithChildren<{
+  className?: string;
+  delay?: number;
+}>;
+
+export default function Reveal({
+  children,
+  className = "",
+  delay = 0
+}: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const reduceMotion = document.documentElement.dataset.reduceMotion === "true";
-    if (reduceMotion) {
-      setInView(true);
+    const node = ref.current;
+    if (!node) return;
+
+    if (
+      !("IntersectionObserver" in window) ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      document.documentElement.dataset.reduceMotion === "true"
+    ) {
+      setVisible(true);
       return;
     }
 
-    const el = ref.current;
-    if (!el) return;
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setInView(true);
-          io.disconnect();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
         }
       },
-      { threshold: 0.12 }
+      {
+        threshold: 0.08,
+        rootMargin: "0px 0px -6% 0px"
+      }
     );
 
-    io.observe(el);
-    return () => io.disconnect();
+    observer.observe(node);
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div ref={ref} className={clsx("reveal-base", inView && "reveal-in", className)}>
+    <div
+      ref={ref}
+      className={`reveal ${visible ? "is-visible" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
       {children}
     </div>
   );

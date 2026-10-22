@@ -1,10 +1,26 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
+    <script>
+      try {
+        const s = JSON.parse(localStorage.getItem("iszzy.settings") || "{}");
+        if (s.theme !== "light") document.documentElement.classList.add("dark");
+      } catch {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>iszzy-portfolio</title>
+    <meta name="theme-color" content="#171717" />
+    <meta name="description" content="Isindu Wijesinghe — software engineer and creative technologist. Explore selected work, the journey, and ideas behind the craft." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Isindu Wijesinghe — Engineering with imagination" />
+    <meta property="og:description" content="An ongoing story told through design, code, and creative technology." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <title>Isindu Wijesinghe — Engineering with imagination</title>
   </head>
   <body>
     <div id="root"></div>

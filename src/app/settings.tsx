@@ -1,4 +1,14 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+  type Dispatch,
+  type SetStateAction
+} from "react";
 
 export type Settings = {
   theme: "light" | "dark";
@@ -7,38 +17,68 @@ export type Settings = {
   reduceMotion: boolean;
 };
 
-const DEFAULTS: Settings = { theme: "dark", hc: false, fs: 16, reduceMotion: false };
-
-type Ctx = {
-  settings: Settings;
-  setSettings: React.Dispatch<React.SetStateAction<Settings>>;
+const DEFAULTS: Settings = {
+  theme: "dark",
+  hc: false,
+  fs: 16,
+  reduceMotion: false
 };
 
-const SettingsContext = createContext<Ctx | null>(null);
+type ContextType = {
+  settings: Settings;
+  setSettings: Dispatch<SetStateAction<Settings>>;
+};
 
-export function SettingsProvider({ children }: { children: React.ReactNode }) {
+const SettingsContext = createContext<ContextType | null>(null);
+
+export function SettingsProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<Settings>(() => {
-    const raw = localStorage.getItem("iszzy.settings");
-    return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : DEFAULTS;
+    try {
+      return {
+        ...DEFAULTS,
+        ...JSON.parse(localStorage.getItem("iszzy.settings") || "{}")
+      };
+    } catch {
+      return DEFAULTS;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem("iszzy.settings", JSON.stringify(settings));
+    document.documentElement.classList.toggle(
+      "dark",
+      settings.theme === "dark"
+    );
+    document.documentElement.classList.toggle("hc", settings.hc);
+    document.documentElement.dataset.reduceMotion = String(
+      settings.reduceMotion
+    );
+    document.documentElement.style.setProperty(
+      "--fs",
+      `${settings.fs}px`
+    );
+    document.documentElement.style.colorScheme = settings.theme;
 
-    const root = document.documentElement;
-    root.classList.toggle("dark", settings.theme === "dark");
-    root.classList.toggle("hc", settings.hc);
-    root.style.setProperty("--fs", `${settings.fs}px`);
-    root.dataset.reduceMotion = settings.reduceMotion ? "true" : "false";
+    localStorage.setItem("iszzy.settings", JSON.stringify(settings));
   }, [settings]);
 
-  const value = useMemo(() => ({ settings, setSettings }), [settings]);
+  const value = useMemo(
+    () => ({ settings, setSettings }),
+    [settings]
+  );
 
-  return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
+  return (
+    <SettingsContext.Provider value={value}>
+      {children}
+    </SettingsContext.Provider>
+  );
 }
 
 export function useSettings() {
-  const ctx = useContext(SettingsContext);
-  if (!ctx) throw new Error("useSettings must be used inside SettingsProvider");
-  return ctx;
+  const context = useContext(SettingsContext);
+
+  if (!context) {
+    throw new Error("useSettings must be inside SettingsProvider");
+  }
+
+  return context;
 }

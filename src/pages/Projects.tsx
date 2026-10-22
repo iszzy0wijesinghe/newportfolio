@@ -1,71 +1,108 @@
+
 import { useMemo, useState } from "react";
-import { projects } from "../content/projects";
-import ProjectCard from "../components/ProjectCard";
 import Reveal from "../components/Reveal";
+import ProjectCard from "../components/ProjectCard";
+import { projects } from "../content/projects";
 
 export default function Projects() {
-  const [q, setQ] = useState("");
-  const [tech, setTech] = useState<string>("");
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All");
 
-  const allTech = useMemo(() => {
-    const set = new Set<string>();
-    projects.forEach((p) => p.tech.forEach((t) => set.add(t)));
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
-  }, []);
+  const categories = [
+    "All",
+    "React",
+    "ASP.NET",
+    "Node",
+    "Mongo"
+  ];
 
-  const filtered = useMemo(() => {
-    const query = q.trim().toLowerCase();
-    return projects.filter((p) => {
-      const matchesQuery =
-        !query ||
-        p.title.toLowerCase().includes(query) ||
-        p.short.toLowerCase().includes(query) ||
-        p.description.toLowerCase().includes(query);
-      const matchesTech = !tech || p.tech.includes(tech);
-      return matchesQuery && matchesTech;
-    });
-  }, [q, tech]);
+  const filtered = useMemo(
+    () =>
+      projects.filter((p) => {
+        const haystack = [
+          p.title,
+          p.short,
+          p.description,
+          p.tech.join(" ")
+        ].join(" ").toLowerCase();
+
+        const selected =
+          category === "All" ||
+          haystack.includes(category.toLowerCase());
+
+        return (
+          selected &&
+          haystack.includes(query.toLowerCase().trim())
+        );
+      }),
+    [query, category]
+  );
 
   return (
-    <div className="space-y-8">
+    <div className="container-wide interior-page">
       <Reveal>
-        <h1 className="text-2xl font-semibold">Projects</h1>
-        <p className="mt-2 text-sm text-[rgb(var(--muted))]">
-         Every project here is a small story, a problem I cared about, a solution I shaped, and a product I refined with clean UI, solid architecture, and real-world development habits. Click on any project to open a full project details (demo, repo, images, structure).
+        <p className="eyebrow">CHAPTER 02 / THE WORK</p>
+
+        <h1 className="page-title">
+          Ideas become <em>interfaces.</em>
+          <br />
+          Interfaces become impact.
+        </h1>
+
+        <p className="page-lead">
+          A growing collection of products, systems,
+          experiments and carefully considered details.
         </p>
       </Reveal>
 
-      <Reveal className="rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card))] p-4">
-        <div className="grid md:grid-cols-2 gap-3">
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search projects…"
-            className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))] text-sm"
-          />
-          <select
-            value={tech}
-            onChange={(e) => setTech(e.target.value)}
-            className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))] text-sm"
-          >
-            <option value="">Filter by tech (all)</option>
-            {allTech.map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
+      <div className="work-filter">
+        <div
+          className="filter-tabs"
+          role="group"
+          aria-label="Filter projects by technology"
+        >
+          {categories.map((item) => (
+            <button
+              key={item}
+              type="button"
+              className={
+                category === item ? "is-active" : ""
+              }
+              onClick={() => setCategory(item)}
+            >
+              {item}
+            </button>
+          ))}
         </div>
-      </Reveal>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((p) => (
-          <Reveal key={p.slug}>
-            <ProjectCard p={p} />
+        <label className="search-label">
+          <span className="sr-only">Search projects</span>
+
+          <input
+            value={query}
+            onChange={(event) =>
+              setQuery(event.target.value)
+            }
+            placeholder="Search work…"
+          />
+        </label>
+      </div>
+
+      <div className="work-grid">
+        {filtered.map((p, i) => (
+          <Reveal
+            key={p.id}
+            delay={(i % 2) * 70}
+          >
+            <ProjectCard p={p} index={i} />
           </Reveal>
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-sm text-[rgb(var(--muted))]">No projects found.</div>
+        <p className="empty-state">
+          No matching work. Try another search or category.
+        </p>
       )}
     </div>
   );

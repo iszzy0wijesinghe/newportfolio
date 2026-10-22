@@ -1,48 +1,57 @@
-import { Suspense, useEffect, useMemo, useState } from "react";
-import { useRoutes } from "react-router-dom";
+import { Suspense, useEffect, useState } from "react";
+import { useLocation, useRoutes } from "react-router-dom";
 import { routes } from "./app/routes";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import A11yFab from "./components/A11yFab";
 import ScrollToTop from "./components/ScrollToTop";
 
-type Settings = {
-  theme: "light" | "dark";
-  hc: boolean;
-  fs: number;
-  reduceMotion: boolean;
-};
-
-const DEFAULTS: Settings = {
-  theme: "dark",
-  hc: false,
-  fs: 16,
-  reduceMotion: false,
-};
-
 export default function App() {
-  const element = useRoutes(routes);
-
-  const [settings, setSettings] = useState<Settings>(() => {
-    const raw = localStorage.getItem("iszzy.settings");
-    return raw ? { ...DEFAULTS, ...JSON.parse(raw) } : DEFAULTS;
-  });
+  const location = useLocation();
+  const page = useRoutes(routes);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    localStorage.setItem("iszzy.settings", JSON.stringify(settings));
-    const root = document.documentElement;
+    let frame = 0;
 
-    root.classList.toggle("dark", settings.theme === "dark");
-    root.classList.toggle("hc", settings.hc);
-    root.style.setProperty("--fs", `${settings.fs}px`);
+    const update = () => {
+      cancelAnimationFrame(frame);
 
-    // reduce-motion hint for CSS / future animations
-    root.dataset.reduceMotion = settings.reduceMotion ? "true" : "false";
-  }, [settings]);
+      frame = requestAnimationFrame(() => {
+        const maxScroll =
+          document.documentElement.scrollHeight -
+          window.innerHeight;
 
-  const ctx = useMemo(() => ({ settings, setSettings }), [settings]);
-  // simple context without React Context to keep it minimal:
-  (window as any).__ISZZY_SETTINGS__ = ctx;
+        const nextProgress =
+          maxScroll > 0
+            ? (window.scrollY / maxScroll) * 100
+            : 0;
+
+        setProgress(Math.min(100, Math.max(0, nextProgress)));
+      });
+    };
+
+    update();
+
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
+    return () => {
+      cancelAnimationFrame(frame);
+
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.documentElement.classList.remove("light");
+    document.documentElement.classList.add("dark");
+    document.documentElement.style.colorScheme = "dark";
+
+    document.body.classList.remove("light");
+    document.body.classList.add("dark");
+  }, []);
 
   return (
     <>
@@ -50,20 +59,32 @@ export default function App() {
         Skip to content
       </a>
 
+      <div
+        className="reading-progress"
+        style={{ width: `${progress}%` }}
+        aria-hidden="true"
+      />
+
       <ScrollToTop />
+
       <Header />
+
       <main
         id="content"
-        className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10"
+        className="site-main"
+        key={location.pathname}
       >
         <Suspense
           fallback={
-            <div className="text-sm text-[rgb(var(--muted))]">Loading…</div>
+            <div className="page-loading" role="status">
+              Loading...
+            </div>
           }
         >
-          {element}
+          {page}
         </Suspense>
       </main>
+
       <Footer />
 
       <A11yFab />

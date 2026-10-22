@@ -1,47 +1,120 @@
-import { NavLink } from "react-router-dom";
-import { profile } from "../content/profile";
-import clsx from "clsx";
-import { useState } from "react";
-import ResumeModal from "./ResumeModal";
 
-const linkBase = "text-sm px-3 py-2 rounded-xl transition hover:bg-[rgb(var(--card))]";
-const active = "bg-[rgb(var(--card))]";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
+import { useSettings } from "../app/settings";
+import { profile } from "../content/profile";
+
+const links = [
+  { to: "/who-am-i", label: "My story" },
+  { to: "/projects", label: "Work" },
+  { to: "/experience", label: "Journey" },
+  { to: "/tech", label: "Toolkit" },
+  { to: "/blog", label: "Journal" }
+];
 
 export default function Header() {
-  const [openResume, setOpenResume] = useState(false);
+  const { pathname } = useLocation();
+  const { settings, setSettings } = useSettings();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    addEventListener("keydown", onEscape);
+    return () => removeEventListener("keydown", onEscape);
+  }, []);
 
   return (
-    <>
-      <header className="sticky top-0 z-40 backdrop-blur border-b border-[rgb(var(--border))] bg-[rgb(var(--bg))]/75">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <NavLink to="/" className="font-semibold tracking-tight">
-            {profile.brand}
-          </NavLink>
+    <header className="site-header">
+      <div className="header-inner container-wide">
+        <Link className="wordmark" to="/" aria-label="Home">
+          {profile.brand}
+          <span className="wordmark-star">✳</span>
+        </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
-            <NavLink to="/who-am-i" className={({isActive}) => clsx(linkBase, isActive && active)}>Who Am I</NavLink>
-            <NavLink to="/projects" className={({isActive}) => clsx(linkBase, isActive && active)}>Projects</NavLink>
-            <NavLink to="/certificates" className={({isActive}) => clsx(linkBase, isActive && active)}>Certificates</NavLink>
-            <NavLink to="/experience" className={({isActive}) => clsx(linkBase, isActive && active)}>Experience</NavLink>
-            <NavLink to="/tech" className={({isActive}) => clsx(linkBase, isActive && active)}>Tech</NavLink>
-            <NavLink to="/hire-me" className={({isActive}) => clsx(linkBase, isActive && active)}>Hire Me</NavLink>
-          </nav>
+        <nav className="desktop-nav" aria-label="Main navigation">
+          {links.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? "is-active" : ""}`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="header-actions">
+          <button
+            className="icon-button theme-button"
+            type="button"
+            aria-label={`Switch to ${
+              settings.theme === "dark" ? "light" : "dark"
+            } mode`}
+            onClick={() =>
+              setSettings((s) => ({
+                ...s,
+                theme: s.theme === "dark" ? "light" : "dark"
+              }))
+            }
+          >
+            {settings.theme === "dark" ? (
+              <Sun size={19} />
+            ) : (
+              <Moon size={19} />
+            )}
+          </button>
+
+          <Link to="/hire-me" className="header-contact">
+            Let's talk <ArrowUpRight size={16} />
+          </Link>
 
           <button
-            onClick={() => setOpenResume(true)}
-            className="text-sm px-3 py-2 rounded-xl bg-[rgb(var(--fg))] text-[rgb(var(--bg))] hover:opacity-90 transition"
+            className="icon-button mobile-trigger"
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
           >
-            View Resume
+            {open ? <X size={23} /> : <Menu size={23} />}
           </button>
         </div>
-      </header>
+      </div>
 
-      <ResumeModal
-        open={openResume}
-        onClose={() => setOpenResume(false)}
-        pdfUrl={profile.resumeUrl}
-        title={`${profile.name} — Resume`}
-      />
-    </>
+      <nav
+        id="mobile-nav"
+        className={`mobile-nav ${open ? "is-open" : ""}`}
+        aria-label="Mobile navigation"
+        inert={!open}
+      >
+        {[
+          ...links,
+          { to: "/certificates", label: "Credentials" },
+          { to: "/hire-me", label: "Contact" }
+        ].map((link, i) => (
+          <NavLink
+            key={link.to}
+            to={link.to}
+            className="mobile-nav-link"
+            onClick={() => setOpen(false)}
+          >
+            <span className="mobile-nav-number">
+              0{i + 1}
+            </span>
+
+            {link.label}
+            <ArrowUpRight size={20} />
+          </NavLink>
+        ))}
+      </nav>
+    </header>
   );
 }

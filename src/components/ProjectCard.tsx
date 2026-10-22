@@ -1,53 +1,51 @@
-/** @format */
 
 import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "../content/projects";
-import TechChip from "../content/TechChip"; // ✅ change if your TechChip is in components
 
-export default function ProjectCard({ p }: { p: Project }) {
+export default function ProjectCard({
+  p,
+  index = 0
+}: {
+  p: Project;
+  index?: number;
+}) {
   return (
     <Link
+      className="project-card"
       to={`/projects/${p.id}`}
-      className="block rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg))] hover:bg-[rgb(var(--card))] transition p-4"
     >
-      <div className="text-sm font-semibold">{p.title}</div>
-      <div className="mt-1 text-sm text-[rgb(var(--muted))] line-clamp-2">
-        {p.short}
+      <div className="project-cover">
+        {p.images[0] ? (
+          <img
+            src={p.images[0]}
+            alt={`${p.title} interface preview`}
+            loading="lazy"
+          />
+        ) : (
+          <span className="project-fallback">
+            {p.title}
+          </span>
+        )}
+
+        <span className="project-open" aria-hidden="true">
+          <ArrowUpRight size={23} />
+        </span>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-2">
-        {p.tech.slice(0, 3).map((t) => (
-          <TechChip key={t} label={t} />
-        ))}
+      <div className="project-meta">
+        <span>
+          CASE STUDY / {String(index + 1).padStart(2, "0")}
+        </span>
+        <span>{p.tech.slice(0, 2).join(" · ")}</span>
       </div>
+
+      <div className="project-heading">
+        <h3>{p.title}</h3>
+        <ArrowUpRight size={22} aria-hidden="true" />
+      </div>
+
+      <p>{p.short}</p>
     </Link>
   );
 }
-
-
-
-// import { Link } from "react-router-dom";
-// import type { Project } from "../content/projects";
-// import TechChip from "../content/TechChip";
-
-// export default function ProjectCard({ p }: { p: Project }) {
-//   return (
-//     <Link
-//       to={`/projects/${p.slug}`}
-//       className="block rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--bg))] hover:bg-[rgb(var(--card))] transition p-4"
-//     >
-//       <div className="text-sm font-semibold">{p.title}</div>
-//       <div className="mt-1 text-sm text-[rgb(var(--muted))] line-clamp-2">
-//         {p.short}
-//       </div>
-
-//       <div className="mt-3 flex flex-wrap gap-2">
-//         {p.tech.slice(0, 3).map((t) => (
-//           <TechChip key={t} label={t} />
-//         ))}
-//       </div>
-//     </Link>
-//   );
-// }
-
-

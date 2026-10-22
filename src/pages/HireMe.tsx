@@ -1,94 +1,144 @@
-/** @format */
+
+import {
+  ArrowUpRight,
+  Github,
+  Linkedin,
+  Mail
+} from "lucide-react";
+import Reveal from "../components/Reveal";
+import StoryVisual from "../components/StoryVisual";
+import { profile } from "../content/profile";
 
 export default function HireMe() {
   return (
-    <div className="space-y-10">
-      <section className="grid lg:grid-cols-[1.1fr_.9fr] gap-8 items-start">
-        {/* Left */}
-        <div className="max-w-xl space-y-4">
-          <h1 className="text-2xl font-semibold">Hire / Freelance</h1>
-          <p className="text-sm text-[rgb(var(--muted))] leading-6">
-            I don’t just write code — I build products people enjoy using. If you
-            want someone who’s detail-driven, fast to adapt, and serious about
-            quality, let’s work together.
-          </p>
+    <div className="container-wide interior-page">
+      <Reveal>
+        <p className="eyebrow">
+          THE NEXT CHAPTER / START HERE
+        </p>
 
+        <h1 className="page-title">
+          Your challenge.
+          <br />
+          <em>Our next story.</em>
+        </h1>
+
+        <p className="page-lead">
+          A product idea, an ambitious problem or a
+          project that deserves better? Tell me about it.
+        </p>
+      </Reveal>
+
+      <div className="contact-grid">
+        <Reveal>
           <form
+            className="contact-form"
             action="https://formspree.io/f/mreeqjrn"
             method="POST"
-            className="space-y-3 rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card))] p-4"
           >
+            <label htmlFor="contact-name">
+              YOUR NAME
+            </label>
+
             <input
-              className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))]"
+              id="contact-name"
               name="name"
-              placeholder="Name"
+              autoComplete="name"
+              placeholder="How should I call you?"
               required
             />
+
+            <label htmlFor="contact-email">
+              YOUR EMAIL
+            </label>
+
             <input
-              className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))]"
+              id="contact-email"
               name="email"
-              placeholder="Email"
               type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
               required
             />
+
+            <label htmlFor="contact-message">
+              THE IDEA / CHALLENGE
+            </label>
+
             <textarea
-              className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))]"
+              id="contact-message"
               name="message"
-              placeholder="What do you need?"
               rows={5}
+              placeholder="A little about what you have in mind…"
               required
+              minLength={10}
+            />
+
+            <input
+              type="hidden"
+              name="_subject"
+              value="New portfolio inquiry"
             />
 
             <button
+              className="button button-primary"
               type="submit"
-              className="px-4 py-2 rounded-xl bg-[rgb(var(--fg))] text-[rgb(var(--bg))] text-sm hover:opacity-90 transition"
             >
-              Send
+              Send the first message
+              <ArrowUpRight size={19} />
             </button>
-          </form>
-        </div>
 
-        {/* Right (Image like Home) */}
-        <div className="rounded-3xl border border-[rgb(var(--border))] bg-[rgb(var(--card))] shadow-soft overflow-hidden">
-          <img
-            src="/me.webp"
-            alt="Portrait"
-            className="block w-full h-auto"
-            loading="lazy"
-          />
+            <p className="form-footnote">
+              This form is handled by Formspree.
+              Please avoid sharing sensitive information.
+            </p>
+          </form>
+        </Reveal>
+
+        <div className="contact-aside">
+          <Reveal>
+            <StoryVisual
+              src="/story/portrait-contact.webp"
+              index="04"
+              label="LET'S MAKE SOMETHING MEANINGFUL"
+              alt="Isindu at work"
+            />
+          </Reveal>
+
+          <Reveal>
+            <div className="contact-social">
+              <span className="eyebrow">
+                OTHER WAYS TO CONNECT
+              </span>
+
+              <a href={`mailto:${profile.socials.email}`}>
+                <Mail size={18} />
+                {profile.socials.email}
+              </a>
+
+              <a
+                href={profile.socials.github}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Github size={18} />
+                GitHub
+                <ArrowUpRight size={16} />
+              </a>
+
+              <a
+                href={profile.socials.linkedin}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Linkedin size={18} />
+                LinkedIn
+                <ArrowUpRight size={16} />
+              </a>
+            </div>
+          </Reveal>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
-
-
-
-
-
-// export default function HireMe() {
-//   return (
-//     <div className="max-w-xl space-y-4">
-//       <h1 className="text-2xl font-semibold">Hire / Freelance</h1>
-//       <p className="text-sm text-[rgb(var(--muted))]">
-//         I don’t just write code — I build products people enjoy using. If you want someone who’s detail-driven, fast to adapt, and serious about quality, let’s work together.
-//       </p>
-
-//       <form
-//         action="https://formspree.io/f/mreeqjrn"
-//         method="POST"
-//         className="space-y-3 rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card))] p-4"
-//       >
-//         <input className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))]"
-//                name="name" placeholder="Name" required />
-//         <input className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))]"
-//                name="email" placeholder="Email" type="email" required />
-//         <textarea className="w-full rounded-xl border border-[rgb(var(--border))] px-3 py-2 bg-[rgb(var(--bg))]"
-//                   name="message" placeholder="What do you need?" rows={5} required />
-//         <button className="px-4 py-2 rounded-xl bg-[rgb(var(--fg))] text-[rgb(var(--bg))] text-sm">
-//           Send
-//         </button>
-//       </form>
-//     </div>
-//   );
-// }
