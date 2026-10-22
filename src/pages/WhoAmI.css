@@ -1,0 +1,1487 @@
+.who-page {
+  --who-black: #050505;
+  --who-dark: #0d0d0d;
+  --who-panel: #141414;
+  --who-white: #f5f5f5;
+  --who-gray: #a3a3a3;
+  --who-muted: #737373;
+  --who-line: #292929;
+
+  width: 100%;
+  overflow: clip;
+  background: var(--who-black);
+  color: var(--who-white);
+  font-family: "Montserrat", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.who-page *,
+.who-page *::before,
+.who-page *::after {
+  box-sizing: border-box;
+}
+
+.who-page h1,
+.who-page h2,
+.who-page h3,
+.who-page p {
+  margin: 0;
+}
+
+.who-page h1,
+.who-page h2,
+.who-page h3 {
+  font-family: inherit;
+  font-weight: 400;
+}
+
+.who-page a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.who-container {
+  width: min(calc(100% - 112px), 1440px);
+  margin-inline: auto;
+}
+
+.who-eyebrow {
+  display: block;
+  color: var(--who-gray);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.8;
+  letter-spacing: 0.15em;
+}
+
+.who-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: var(--who-gray);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.who-section-number {
+  color: var(--who-white);
+}
+
+.who-section-line {
+  width: 36px;
+  height: 1px;
+  background: var(--who-line);
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.who-hero {
+  position: relative;
+  height: calc(100svh - var(--header-height, 80px));
+  min-height: 620px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #080808;
+}
+
+.who-hero-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.who-hero-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  will-change: transform;
+}
+
+.who-hero-shade {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 5, 5, 0.94) 0%,
+      rgba(5, 5, 5, 0.78) 32%,
+      rgba(5, 5, 5, 0.2) 75%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(5, 5, 5, 0.8),
+      transparent 35%
+    );
+}
+
+.who-hero-background-word {
+  position: absolute;
+  z-index: 2;
+  right: -2%;
+  bottom: 4%;
+  color: rgba(255, 255, 255, 0.045);
+  font-size: clamp(110px, 17vw, 290px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.09em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.who-hero-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  width: min(calc(100% - 112px), 1500px);
+  height: 100%;
+  margin-inline: auto;
+}
+
+.who-hero-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 75px;
+  color: #a1a1a1;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.who-hero-heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  padding-block: 45px;
+}
+
+.who-hero-heading h1 {
+  margin-top: 30px;
+  font-size: clamp(60px, 8.4vw, 140px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.08em;
+}
+
+.who-hero-heading h1 span {
+  color: var(--who-gray);
+}
+
+.who-hero-description {
+  margin-top: 32px !important;
+  color: #d0d0d0;
+  font-size: clamp(15px, 1.5vw, 21px);
+  line-height: 1.7;
+}
+
+.who-hero-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 75px;
+  border-top: 1px solid #ffffff25;
+  color: #a1a1a1;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.who-hero-bottom > div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* =========================================================
+   INTRODUCTION
+   ========================================================= */
+
+.who-introduction {
+  padding: 155px 0 165px;
+  background: var(--who-dark);
+}
+
+.who-introduction-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(70px, 11vw, 180px);
+  margin-top: 100px;
+}
+
+.who-introduction h2 {
+  font-size: clamp(45px, 5.4vw, 86px);
+  line-height: 1.2;
+  letter-spacing: -0.065em;
+}
+
+.who-introduction h2 span {
+  color: var(--who-gray);
+}
+
+.who-introduction-copy {
+  padding-top: 12px;
+}
+
+.who-introduction-copy p {
+  max-width: 510px;
+  margin-bottom: 25px;
+  color: var(--who-gray);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.who-introduction-copy .who-introduction-lead {
+  color: var(--who-white);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.who-inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--who-white);
+  font-size: 12px;
+  font-weight: 500;
+  transition: gap 0.3s ease;
+}
+
+.who-inline-link:hover {
+  gap: 28px;
+}
+
+/* =========================================================
+   MINDSET
+   ========================================================= */
+
+.who-mindset {
+  padding: 145px 0 165px;
+  background: var(--who-black);
+}
+
+.who-mindset-heading {
+  margin-top: 100px;
+}
+
+.who-mindset-heading h2 {
+  margin-top: 25px;
+  font-size: clamp(45px, 5.6vw, 86px);
+  line-height: 1.2;
+  letter-spacing: -0.065em;
+}
+
+.who-mindset-heading h2 span {
+  color: var(--who-gray);
+}
+
+.who-perspectives {
+  margin-top: 100px;
+  border-top: 1px solid var(--who-line);
+}
+
+.who-perspective {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+  gap: 50px;
+  padding: 90px 0;
+  border-bottom: 1px solid var(--who-line);
+}
+
+.who-perspective-number {
+  color: #474747;
+  font-size: clamp(75px, 10vw, 155px);
+  line-height: 1;
+  letter-spacing: -0.08em;
+}
+
+.who-perspective-content h3 {
+  margin-top: 25px;
+  font-size: clamp(40px, 5vw, 74px);
+  line-height: 1.2;
+  letter-spacing: -0.06em;
+}
+
+.who-perspective-content h3 span {
+  color: var(--who-gray);
+}
+
+.who-perspective-content > p {
+  max-width: 570px;
+  margin-top: 30px;
+  color: var(--who-gray);
+  font-size: 14px;
+  line-height: 2;
+}
+
+/* =========================================================
+   JOURNEY
+   ========================================================= */
+
+.who-journey {
+  padding: 155px 0 180px;
+  background: var(--who-dark);
+}
+
+.who-journey-heading {
+  margin-top: 95px;
+}
+
+.who-journey-heading h2 {
+  margin-top: 25px;
+  font-size: clamp(50px, 6vw, 95px);
+  line-height: 1.15;
+  letter-spacing: -0.07em;
+}
+
+.who-journey-heading h2 span {
+  color: var(--who-gray);
+}
+
+.who-journey-heading > p:last-child {
+  max-width: 570px;
+  margin-top: 32px;
+  color: var(--who-gray);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.who-timeline {
+  position: relative;
+  margin-top: 120px;
+}
+
+.who-timeline-track {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #343434;
+  transform: translateX(-50%);
+}
+
+.who-timeline-progress {
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+  transform: scaleY(0);
+  transform-origin: top;
+  box-shadow: 0 0 12px #ffffff55;
+}
+
+.who-timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 350px;
+  padding-bottom: 75px;
+}
+
+.who-timeline-left .who-timeline-card {
+  grid-column: 1;
+  margin-right: 70px;
+}
+
+.who-timeline-right .who-timeline-card {
+  grid-column: 2;
+  margin-left: 70px;
+}
+
+.who-timeline-node {
+  position: absolute;
+  z-index: 2;
+  top: 35px;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  border: 2px solid #777;
+  border-radius: 50%;
+  background: var(--who-dark);
+  transform: translateX(-50%);
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
+}
+
+.who-timeline-item.is-active .who-timeline-node {
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 0 20px #ffffff77;
+}
+
+.who-timeline-card {
+  position: relative;
+  padding: 35px;
+  border: 1px solid #292929;
+  background: #111;
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease;
+}
+
+.who-timeline-item.is-active .who-timeline-card {
+  border-color: #555;
+  background: #151515;
+}
+
+.who-timeline-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--who-muted);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.who-timeline-company {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 35px;
+}
+
+.who-timeline-company-logo {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  padding: 7px;
+  border: 1px solid #303030;
+  background: #f5f5f5;
+}
+
+.who-timeline-company-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.who-timeline-company p {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.who-timeline-company span {
+  display: block;
+  margin-top: 5px;
+  color: var(--who-muted);
+  font-size: 10px;
+}
+
+.who-timeline-card h3 {
+  margin-top: 28px;
+  font-size: clamp(25px, 2.6vw, 37px);
+  line-height: 1.3;
+  letter-spacing: -0.045em;
+}
+
+.who-timeline-summary {
+  margin-top: 18px !important;
+  color: var(--who-gray);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.who-current-badge {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 7px 11px;
+  border: 1px solid #555;
+  color: #ddd;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+/* =========================================================
+   LEGACY — EDITORIAL VENTURE SHOWCASE
+   ========================================================= */
+
+.who-legacy {
+  padding-top: 155px;
+  background: var(--who-black);
+}
+
+.who-legacy-intro {
+  margin-top: 95px;
+  padding-bottom: 145px;
+}
+
+.who-legacy-intro h2 {
+  max-width: 1300px;
+  margin-top: 28px;
+  font-size: clamp(60px, 8vw, 132px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.08em;
+}
+
+.who-legacy-intro h2 span {
+  color: var(--who-gray);
+}
+
+.who-legacy-intro-bottom {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 50px;
+  margin-top: 65px;
+  padding-top: 24px;
+  border-top: 1px solid var(--who-line);
+}
+
+.who-legacy-intro-bottom p {
+  max-width: 500px;
+  color: var(--who-gray);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.who-legacy-intro-bottom > span {
+  color: var(--who-muted);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+}
+
+.who-ventures {
+  width: 100%;
+}
+
+.who-venture {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 680px;
+  overflow: hidden;
+  border-top: 1px solid #262626;
+}
+
+.who-venture:last-child {
+  border-bottom: 1px solid #262626;
+}
+
+.who-venture-reverse .who-venture-visual {
+  order: 2;
+}
+
+.who-venture-reverse .who-venture-story {
+  order: 1;
+}
+
+.who-venture-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 680px;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      ellipse at 50% 50%,
+      #202020 0%,
+      #111 43%,
+      #080808 100%
+    );
+}
+
+.who-venture-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(#ffffff08 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 20%,
+    #000 80%,
+    transparent
+  );
+}
+
+.who-venture-year {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: rgba(255, 255, 255, 0.055);
+  font-size: clamp(160px, 19vw, 340px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.09em;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.who-venture-logo {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(65%, 390px);
+  height: 300px;
+  will-change: transform;
+}
+
+.who-venture-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 45px #00000055);
+}
+
+.who-venture-visual-bottom {
+  position: absolute;
+  z-index: 3;
+  right: 45px;
+  bottom: 35px;
+  left: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff22;
+  color: #858585;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.who-venture-story {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 680px;
+  padding: clamp(55px, 7vw, 115px);
+  background: #0b0b0b;
+}
+
+.who-venture-story-inner {
+  width: 100%;
+  max-width: 590px;
+}
+
+.who-venture-story h3 {
+  margin-top: 25px;
+  font-size: clamp(46px, 5vw, 84px);
+  line-height: 1.13;
+  letter-spacing: -0.07em;
+  overflow-wrap: anywhere;
+}
+
+.who-venture-statement {
+  max-width: 530px;
+  margin-top: 35px !important;
+  color: #d0d0d0;
+  font-size: clamp(19px, 1.9vw, 27px);
+  line-height: 1.55;
+  letter-spacing: -0.025em;
+}
+
+.who-venture-description {
+  max-width: 490px;
+  margin-top: 25px !important;
+  color: var(--who-gray);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.who-venture-story-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 65px;
+  padding-top: 20px;
+  border-top: 1px solid var(--who-line);
+  color: var(--who-muted);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+/* =========================================================
+   EDUCATION
+   ========================================================= */
+
+.who-education {
+  padding: 155px 0 175px;
+  background: var(--who-panel);
+}
+
+.who-education-heading {
+  margin-top: 100px;
+}
+
+.who-education-heading h2 {
+  margin-top: 25px;
+  font-size: clamp(48px, 6vw, 90px);
+  line-height: 1.17;
+  letter-spacing: -0.065em;
+}
+
+.who-education-heading h2 span {
+  color: var(--who-gray);
+}
+
+.who-education-list {
+  margin-top: 100px;
+  border-top: 1px solid #363636;
+}
+
+.who-education-item {
+  display: grid;
+  grid-template-columns: 65px minmax(0, 1fr) 35px;
+  align-items: start;
+  gap: 45px;
+  padding: 45px 0;
+  border-bottom: 1px solid #363636;
+}
+
+.who-education-number {
+  padding-top: 5px;
+  color: var(--who-muted);
+  font-size: 11px;
+}
+
+.who-education-period {
+  color: var(--who-muted);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+}
+
+.who-education-item h3 {
+  margin-top: 16px;
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1.3;
+  letter-spacing: -0.045em;
+}
+
+.who-education-item p {
+  margin-top: 12px;
+  color: var(--who-gray);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.who-education-item > svg {
+  margin-top: 7px;
+  color: var(--who-muted);
+}
+
+/* =========================================================
+   ENDING
+   ========================================================= */
+
+.who-ending {
+  padding: 155px 0 175px;
+  background: #f0f0ee;
+  color: #111;
+}
+
+.who-ending .who-section-heading,
+.who-ending .who-eyebrow {
+  color: #777;
+}
+
+.who-ending .who-section-number {
+  color: #111;
+}
+
+.who-ending .who-section-line {
+  background: #bbb;
+}
+
+.who-ending-content {
+  margin-top: 100px;
+}
+
+.who-ending-content h2 {
+  margin-top: 25px;
+  font-size: clamp(65px, 9vw, 145px);
+  font-weight: 500;
+  line-height: 1.07;
+  letter-spacing: -0.085em;
+}
+
+.who-ending-content h2 span {
+  color: #777;
+}
+
+.who-ending-content > p:last-of-type {
+  max-width: 560px;
+  margin-top: 35px;
+  color: #666;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.who-ending-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+  margin-top: 60px;
+}
+
+.who-ending-primary,
+.who-ending-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  min-width: 210px;
+  padding: 17px 0;
+  border-bottom: 1px solid #111;
+  color: #111 !important;
+  font-size: 13px;
+  font-weight: 600;
+  transition: gap 0.3s ease;
+}
+
+.who-ending-primary:hover,
+.who-ending-secondary:hover {
+  gap: 42px;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .who-container,
+  .who-hero-content {
+    width: calc(100% - 72px);
+  }
+
+  .who-introduction-grid {
+    gap: 65px;
+  }
+
+  .who-timeline-left .who-timeline-card {
+    margin-right: 40px;
+  }
+
+  .who-timeline-right .who-timeline-card {
+    margin-left: 40px;
+  }
+
+  .who-venture {
+    min-height: 570px;
+  }
+
+  .who-venture-visual,
+  .who-venture-story {
+    min-height: 570px;
+  }
+
+  .who-venture-story {
+    padding: 55px 45px;
+  }
+
+  .who-venture-logo {
+    width: 72%;
+    height: 260px;
+  }
+
+  .who-venture-story h3 {
+    font-size: clamp(40px, 5vw, 65px);
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 899px) {
+  .who-container,
+  .who-hero-content {
+    width: calc(100% - 48px);
+  }
+
+  .who-hero {
+    height: calc(100svh - var(--header-height, 72px));
+    min-height: 520px;
+  }
+
+  .who-hero-image img {
+    object-position: 58% center;
+  }
+
+  .who-hero-shade {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 5, 5, 0.92),
+        rgba(5, 5, 5, 0.48) 72%,
+        rgba(5, 5, 5, 0.3)
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5, 5, 5, 0.75),
+        transparent 45%
+      );
+  }
+
+  .who-hero-topline,
+  .who-hero-bottom {
+    min-height: 55px;
+  }
+
+  .who-hero-heading h1 {
+    font-size: clamp(54px, 9vw, 90px);
+  }
+
+  .who-hero-background-word {
+    font-size: 19vw;
+  }
+
+  .who-introduction,
+  .who-mindset,
+  .who-journey,
+  .who-education,
+  .who-ending {
+    padding-block: 105px 120px;
+  }
+
+  .who-introduction-grid {
+    grid-template-columns: 1fr;
+    gap: 45px;
+    margin-top: 70px;
+  }
+
+  .who-introduction h2 {
+    font-size: clamp(45px, 7vw, 70px);
+  }
+
+  .who-mindset-heading,
+  .who-journey-heading,
+  .who-education-heading,
+  .who-ending-content {
+    margin-top: 75px;
+  }
+
+  .who-mindset-heading h2,
+  .who-journey-heading h2,
+  .who-education-heading h2 {
+    font-size: clamp(46px, 7vw, 75px);
+  }
+
+  .who-perspectives {
+    margin-top: 75px;
+  }
+
+  .who-perspective {
+    grid-template-columns: 120px 1fr;
+    gap: 35px;
+    padding: 65px 0;
+  }
+
+  .who-perspective-number {
+    font-size: 90px;
+  }
+
+  .who-perspective-content h3 {
+    font-size: clamp(36px, 5vw, 55px);
+  }
+
+  .who-timeline {
+    margin-top: 85px;
+  }
+
+  .who-timeline-track {
+    left: 12px;
+  }
+
+  .who-timeline-item {
+    display: block;
+    min-height: 0;
+    padding: 0 0 45px 45px;
+  }
+
+  .who-timeline-node {
+    left: 12px;
+  }
+
+  .who-timeline-left .who-timeline-card,
+  .who-timeline-right .who-timeline-card {
+    margin: 0;
+  }
+
+  /* Legacy */
+
+  .who-legacy {
+    padding-top: 105px;
+  }
+
+  .who-legacy-intro {
+    margin-top: 75px;
+    padding-bottom: 95px;
+  }
+
+  .who-legacy-intro h2 {
+    font-size: clamp(56px, 8vw, 85px);
+  }
+
+  .who-venture {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .who-venture-reverse .who-venture-visual,
+  .who-venture-reverse .who-venture-story {
+    order: initial;
+  }
+
+  .who-venture-visual {
+    min-height: 420px;
+  }
+
+  .who-venture-story {
+    min-height: 0;
+    padding: 75px 48px 90px;
+  }
+
+  .who-venture-logo {
+    width: min(55%, 350px);
+    height: 260px;
+  }
+
+  .who-venture-year {
+    font-size: 29vw;
+  }
+
+  .who-venture-story h3 {
+    font-size: clamp(45px, 7vw, 75px);
+  }
+
+  .who-venture-visual-bottom {
+    right: 30px;
+    bottom: 25px;
+    left: 30px;
+  }
+
+  .who-education-list {
+    margin-top: 75px;
+  }
+
+  .who-ending-content h2 {
+    font-size: clamp(65px, 10vw, 105px);
+  }
+}
+
+/* =========================================================
+   PHONES
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .who-container,
+  .who-hero-content {
+    width: calc(100% - 36px);
+  }
+
+  .who-hero {
+    min-height: 500px;
+  }
+
+  .who-hero-topline,
+  .who-hero-bottom {
+    min-height: 48px;
+    font-size: 7px;
+    letter-spacing: 0.08em;
+  }
+
+  .who-hero-topline {
+    gap: 15px;
+  }
+
+  .who-hero-topline span:last-child {
+    text-align: right;
+  }
+
+  .who-hero-heading {
+    padding-block: 30px;
+  }
+
+  .who-hero-heading h1 {
+    margin-top: 20px;
+    font-size: clamp(44px, 11.2vw, 68px);
+    line-height: 1.13;
+    letter-spacing: -0.075em;
+  }
+
+  .who-hero-description {
+    margin-top: 22px !important;
+    font-size: 13px;
+  }
+
+  .who-hero-bottom > span {
+    max-width: 190px;
+    line-height: 1.6;
+  }
+
+  .who-hero-bottom > div {
+    gap: 8px;
+  }
+
+  .who-hero-background-word {
+    right: -5%;
+    bottom: 13%;
+    font-size: 23vw;
+  }
+
+  .who-introduction,
+  .who-mindset,
+  .who-journey,
+  .who-education,
+  .who-ending {
+    padding-block: 85px 100px;
+  }
+
+  .who-section-heading {
+    gap: 10px;
+    font-size: 9px;
+  }
+
+  .who-section-line {
+    width: 25px;
+  }
+
+  .who-introduction-grid {
+    gap: 35px;
+    margin-top: 55px;
+  }
+
+  .who-introduction h2,
+  .who-mindset-heading h2,
+  .who-journey-heading h2,
+  .who-education-heading h2 {
+    font-size: clamp(37px, 9.3vw, 53px);
+    line-height: 1.17;
+  }
+
+  .who-introduction-copy .who-introduction-lead {
+    font-size: 16px;
+  }
+
+  .who-introduction-copy p {
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .who-mindset-heading,
+  .who-journey-heading,
+  .who-education-heading,
+  .who-ending-content {
+    margin-top: 55px;
+  }
+
+  .who-perspectives {
+    margin-top: 55px;
+  }
+
+  .who-perspective {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 55px 0;
+  }
+
+  .who-perspective-number {
+    font-size: 80px;
+  }
+
+  .who-perspective-content h3 {
+    margin-top: 18px;
+    font-size: clamp(34px, 8vw, 46px);
+  }
+
+  .who-perspective-content > p {
+    margin-top: 20px;
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .who-journey-heading > p:last-child {
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .who-timeline {
+    margin-top: 65px;
+  }
+
+  .who-timeline-item {
+    padding-left: 32px;
+    padding-bottom: 35px;
+  }
+
+  .who-timeline-track,
+  .who-timeline-node {
+    left: 5px;
+  }
+
+  .who-timeline-card {
+    padding: 23px;
+  }
+
+  .who-timeline-card-top {
+    font-size: 9px;
+  }
+
+  .who-timeline-company {
+    margin-top: 25px;
+  }
+
+  .who-timeline-company-logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .who-timeline-card h3 {
+    margin-top: 23px;
+    font-size: 27px;
+  }
+
+  .who-timeline-summary {
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* Legacy mobile */
+
+  .who-legacy {
+    padding-top: 85px;
+  }
+
+  .who-legacy-intro {
+    margin-top: 55px;
+    padding-bottom: 70px;
+  }
+
+  .who-legacy-intro h2 {
+    font-size: clamp(43px, 10.5vw, 62px);
+    line-height: 1.12;
+  }
+
+  .who-legacy-intro-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .who-legacy-intro-bottom p {
+    font-size: 13px;
+    line-height: 1.85;
+  }
+
+  .who-venture-visual {
+    min-height: 320px;
+  }
+
+  .who-venture-logo {
+    width: min(65%, 250px);
+    height: 190px;
+  }
+
+  .who-venture-year {
+    font-size: 34vw;
+  }
+
+  .who-venture-visual-bottom {
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+    font-size: 8px;
+  }
+
+  .who-venture-story {
+    padding: 55px 22px 70px;
+  }
+
+  .who-venture-story h3 {
+    margin-top: 18px;
+    font-size: clamp(38px, 9vw, 55px);
+  }
+
+  .who-venture-statement {
+    margin-top: 25px !important;
+    font-size: 19px;
+    line-height: 1.55;
+  }
+
+  .who-venture-description {
+    margin-top: 20px !important;
+    font-size: 12px;
+    line-height: 1.85;
+  }
+
+  .who-venture-story-footer {
+    margin-top: 40px;
+    font-size: 8px;
+  }
+
+  /* Education */
+
+  .who-education-list {
+    margin-top: 60px;
+  }
+
+  .who-education-item {
+    grid-template-columns: 25px minmax(0, 1fr) 20px;
+    gap: 15px;
+    padding: 35px 0;
+  }
+
+  .who-education-item h3 {
+    font-size: 25px;
+  }
+
+  .who-education-item p {
+    font-size: 12px;
+  }
+
+  .who-education-item > svg {
+    width: 17px;
+  }
+
+  /* Ending */
+
+  .who-ending-content h2 {
+    font-size: clamp(52px, 12vw, 75px);
+    line-height: 1.1;
+  }
+
+  .who-ending-content > p:last-of-type {
+    font-size: 13px;
+  }
+
+  .who-ending-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    margin-top: 45px;
+  }
+}
+
+/* =========================================================
+   VERY NARROW PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+  .who-hero-heading h1 {
+    font-size: clamp(39px, 10.5vw, 48px);
+  }
+
+  .who-hero-bottom > span {
+    display: none;
+  }
+
+  .who-introduction h2,
+  .who-mindset-heading h2,
+  .who-journey-heading h2,
+  .who-education-heading h2 {
+    font-size: 35px;
+  }
+
+  .who-timeline-card {
+    padding: 18px;
+  }
+
+  .who-timeline-card h3 {
+    font-size: 24px;
+  }
+
+  .who-legacy-intro h2 {
+    font-size: 40px;
+  }
+
+  .who-venture-visual {
+    min-height: 280px;
+  }
+
+  .who-venture-logo {
+    width: 67%;
+    height: 170px;
+  }
+
+  .who-venture-story {
+    padding: 45px 18px 60px;
+  }
+
+  .who-venture-story h3 {
+    font-size: 35px;
+  }
+
+  .who-ending-content h2 {
+    font-size: 47px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .who-page *,
+  .who-page *::before,
+  .who-page *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .who-hero-image img,
+  .who-hero-background-word,
+  .who-hero-heading,
+  .who-venture-logo,
+  .who-venture-year,
+  [data-who-reveal] {
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .who-timeline-progress {
+    transform: scaleY(1) !important;
+  }
+}
+
+html[data-reduce-motion="true"] .who-page *,
+html[data-reduce-motion="true"] .who-page *::before,
+html[data-reduce-motion="true"] .who-page *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+html[data-reduce-motion="true"] .who-page [data-who-reveal],
+html[data-reduce-motion="true"] .who-page .who-hero-image img,
+html[data-reduce-motion="true"] .who-page .who-hero-background-word,
+html[data-reduce-motion="true"] .who-page .who-hero-heading,
+html[data-reduce-motion="true"] .who-page .who-venture-logo,
+html[data-reduce-motion="true"] .who-page .who-venture-year {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+html[data-reduce-motion="true"] .who-page .who-timeline-progress {
+  transform: scaleY(1) !important;
+}

@@ -1,3 +1,5 @@
+/** @format */
+
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
@@ -11,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger, Observer);
 const PORTRAIT_IMAGES = [
   "/iszzyimage.webp",
   "/iszzydecission.webp",
-  "/iszzymic.webp"
+  "/iszzymic.webp",
 ];
 
 function getPortraitIndex(scene: number) {
@@ -24,28 +26,28 @@ const statements = [
   {
     number: "01",
     first: "I was never interested",
-    second: "in being just one thing."
+    second: "in being just one thing.",
   },
   {
     number: "02",
     first: "Technology taught me",
-    second: "how to build."
+    second: "how to build.",
   },
   {
     number: "03",
     first: "Design taught me",
-    second: "how to make people feel."
+    second: "how to make people feel.",
   },
   {
     number: "04",
     first: "Business taught me",
-    second: "how to think beyond."
+    second: "how to think beyond.",
   },
   {
     number: "05",
     first: "Curiosity taught me",
-    second: "never to stop."
-  }
+    second: "never to stop.",
+  },
 ];
 
 const dimensions = [
@@ -55,7 +57,7 @@ const dimensions = [
     title: "The Engineer.",
     description:
       "I build digital products, systems, and experiences that turn complex challenges into practical solutions.",
-    detail: "DEVELOPMENT / SYSTEMS / TECHNOLOGY"
+    detail: "DEVELOPMENT / SYSTEMS / TECHNOLOGY",
   },
   {
     number: "02",
@@ -63,7 +65,7 @@ const dimensions = [
     title: "The Entrepreneur.",
     description:
       "I explore opportunities, develop ideas, and work to create businesses and products with lasting purpose.",
-    detail: "BUSINESS / INNOVATION / MOTIORA"
+    detail: "BUSINESS / INNOVATION / MOTIORA",
   },
   {
     number: "03",
@@ -71,7 +73,7 @@ const dimensions = [
     title: "The Creative.",
     description:
       "I care about how things look, feel, and communicate. Design is how I bring clarity and character to ideas.",
-    detail: "DESIGN / BRANDING / VISUAL IDENTITY"
+    detail: "DESIGN / BRANDING / VISUAL IDENTITY",
   },
   {
     number: "04",
@@ -79,7 +81,7 @@ const dimensions = [
     title: "The Strategist.",
     description:
       "I connect technology, creativity, and business thinking to give ambitious ideas a clearer direction.",
-    detail: "MARKETING / STRATEGY / COMMUNICATION"
+    detail: "MARKETING / STRATEGY / COMMUNICATION",
   },
   {
     number: "05",
@@ -87,8 +89,8 @@ const dimensions = [
     title: "The Educator.",
     description:
       "I believe knowledge grows through sharing. Teaching and mentoring are meaningful parts of my journey.",
-    detail: "ICT / LEARNING / MENTORING"
-  }
+    detail: "ICT / LEARNING / MENTORING",
+  },
 ];
 
 type PinnedStoryOptions = {
@@ -102,7 +104,7 @@ function createPinnedStory({
   section,
   panels,
   onChange,
-  portraits
+  portraits,
 }: PinnedStoryOptions) {
   if (panels.length < 2) return;
 
@@ -115,41 +117,42 @@ function createPinnedStory({
   let lastMoveAt = 0;
   let activePortraitIndex = 0;
 
-  let gestureQuietTimer: ReturnType<typeof setTimeout> | undefined;
   let releaseTimer: ReturnType<typeof setTimeout> | undefined;
-
   let animation: gsap.core.Timeline | undefined;
   let trigger: ScrollTrigger;
-
   let entryFrame = 0;
 
-  const gestureGap = 850;
+  const isTouchDevice = window.matchMedia(
+    "(hover: none) and (pointer: coarse)",
+  ).matches;
+
+  const gestureGap = isTouchDevice ? 450 : 650;
   const portraitZoom = 1.018;
 
   const portraitElements = (portraits ?? []).filter(
-    (image): image is HTMLImageElement => image !== null
+    (image): image is HTMLImageElement => image !== null,
   );
 
   gsap.set(panels, {
     autoAlpha: 0,
     y: 0,
-    pointerEvents: "none"
+    pointerEvents: "none",
   });
 
   gsap.set(panels[0], {
     autoAlpha: 1,
-    pointerEvents: "auto"
+    pointerEvents: "auto",
   });
 
   if (portraitElements.length) {
     gsap.set(portraitElements, {
       autoAlpha: 0,
       scale: 1,
-      y: 0
+      y: 0,
     });
 
     gsap.set(portraitElements[0], {
-      autoAlpha: 1
+      autoAlpha: 1,
     });
   }
 
@@ -165,10 +168,7 @@ function createPinnedStory({
     if (!nextPortrait) return;
 
     const progress = scene / last;
-
-    const targetScale =
-      1 + progress * (portraitZoom - 1);
-
+    const targetScale = 1 + progress * (portraitZoom - 1);
     const targetY = -progress * 9;
 
     if (immediate) {
@@ -177,13 +177,13 @@ function createPinnedStory({
       gsap.set(portraitElements, {
         autoAlpha: 0,
         scale: 1,
-        y: 0
+        y: 0,
       });
 
       gsap.set(nextPortrait, {
         autoAlpha: 1,
         scale: targetScale,
-        y: targetY
+        y: targetY,
       });
 
       activePortraitIndex = nextPortraitIndex;
@@ -198,9 +198,9 @@ function createPinnedStory({
           autoAlpha: 0,
           scale: 1.012,
           y: -5,
-          duration: 0.9,
+          duration: 0.7,
           ease: "power2.inOut",
-          overwrite: true
+          overwrite: true,
         });
       }
 
@@ -209,16 +209,16 @@ function createPinnedStory({
         {
           autoAlpha: 0,
           scale: 1.025,
-          y: 12
+          y: 12,
         },
         {
           autoAlpha: 1,
           scale: targetScale,
           y: targetY,
-          duration: 1.2,
+          duration: 0.9,
           ease: "power2.out",
-          overwrite: true
-        }
+          overwrite: true,
+        },
       );
 
       activePortraitIndex = nextPortraitIndex;
@@ -226,9 +226,9 @@ function createPinnedStory({
       gsap.to(nextPortrait, {
         scale: targetScale,
         y: targetY,
-        duration: 2.2,
+        duration: 1.4,
         ease: "sine.inOut",
-        overwrite: true
+        overwrite: true,
       });
     }
   };
@@ -248,12 +248,12 @@ function createPinnedStory({
       gsap.set(panels, {
         autoAlpha: 0,
         y: 0,
-        pointerEvents: "none"
+        pointerEvents: "none",
       });
 
       gsap.set(panels[next], {
         autoAlpha: 1,
-        pointerEvents: "auto"
+        pointerEvents: "auto",
       });
 
       busy = false;
@@ -267,30 +267,30 @@ function createPinnedStory({
       gsap.set(panels, {
         autoAlpha: 0,
         y: 0,
-        pointerEvents: "none"
+        pointerEvents: "none",
       });
 
       gsap.set(outgoing, {
         autoAlpha: 1,
-        y: 0
+        y: 0,
       });
 
       gsap.set(incoming, {
         autoAlpha: 0,
-        y: direction * 20
+        y: direction * 18,
       });
 
       animation = gsap.timeline({
         onComplete: () => {
           busy = false;
-        }
+        },
       });
 
       animation.to(outgoing, {
         autoAlpha: 0,
-        y: direction * -14,
-        duration: 0.28,
-        ease: "power2.in"
+        y: direction * -12,
+        duration: 0.22,
+        ease: "power2.in",
       });
 
       animation.to(
@@ -298,14 +298,14 @@ function createPinnedStory({
         {
           autoAlpha: 1,
           y: 0,
-          duration: 0.58,
-          ease: "power3.out"
+          duration: 0.45,
+          ease: "power3.out",
         },
-        "+=0.04"
+        "+=0.02",
       );
 
       animation.set(incoming, {
-        pointerEvents: "auto"
+        pointerEvents: "auto",
       });
     }
 
@@ -316,9 +316,9 @@ function createPinnedStory({
   const getHeader = () => {
     return (
       parseFloat(
-        getComputedStyle(
-          document.documentElement
-        ).getPropertyValue("--header-height")
+        getComputedStyle(document.documentElement).getPropertyValue(
+          "--header-height",
+        ),
       ) || 80
     );
   };
@@ -353,83 +353,77 @@ function createPinnedStory({
 
     animation?.progress(1);
 
-    if (gestureQuietTimer) {
-      clearTimeout(gestureQuietTimer);
-    }
-
     cancelAnimationFrame(entryFrame);
 
     const destination =
-      direction > 0
-        ? trigger.end + 3
-        : Math.max(0, trigger.start - 3);
+      direction > 0 ? trigger.end + 3 : Math.max(0, trigger.start - 3);
 
     window.scrollTo({
       top: destination,
-      behavior: "instant"
+      behavior: "instant",
     });
 
     releaseTimer = setTimeout(() => {
       releasing = false;
       lastMoveAt = performance.now();
-    }, 550);
+    }, 450);
   };
 
-  const onVisibilityChange = () => {
-    if (document.hidden) {
-      busy = false;
-      animation?.progress(1);
-      lastMoveAt = 0;
+  const navigate = (direction: number) => {
+    if (!active || releasing || busy) return;
+
+    const now = performance.now();
+
+    if (lastMoveAt && now - lastMoveAt < gestureGap) {
+      return;
     }
-  };
 
-  document.addEventListener(
-    "visibilitychange",
-    onVisibilityChange
-  );
+    lastMoveAt = now;
+
+    if (
+      (direction > 0 && current === last) ||
+      (direction < 0 && current === 0)
+    ) {
+      leave(direction);
+      return;
+    }
+
+    show(current + direction);
+  };
 
   const observer = Observer.create({
     target: window,
     type: "wheel,touch",
     preventDefault: true,
-    tolerance: 18,
+    tolerance: isTouchDevice ? 24 : 18,
     wheelSpeed: 1,
     allowClicks: true,
 
     onChangeY: (self) => {
       if (!active || releasing) return;
 
-      if (gestureQuietTimer) {
-        clearTimeout(gestureQuietTimer);
-      }
+      const eventType = self.event?.type ?? "";
 
-      gestureQuietTimer = setTimeout(() => {
-        lastMoveAt = 0;
-      }, 300);
+      const isTouchEvent = eventType.startsWith("touch");
 
-      const now = performance.now();
+      /*
+       * Desktop:
+       * Wheel down -> next
+       * Wheel up   -> previous
+       *
+       * Mobile:
+       * Finger swipe up   -> next
+       * Finger swipe down -> previous
+       */
 
-      if (
-        busy ||
-        (lastMoveAt && now - lastMoveAt < gestureGap)
-      ) {
-        return;
-      }
+      const direction = isTouchEvent
+        ? -Math.sign(self.deltaY)
+        : Math.sign(self.deltaY);
 
-      const direction = self.deltaY > 0 ? 1 : -1;
+      if (direction === 0) return;
 
-      lastMoveAt = now;
-
-      if (
-        (direction > 0 && current === last) ||
-        (direction < 0 && current === 0)
-      ) {
-        leave(direction);
-        return;
-      }
-
-      show(current + direction);
-    }
+      navigate(direction);
+    },
   });
 
   observer.disable();
@@ -442,13 +436,22 @@ function createPinnedStory({
 
   window.addEventListener("keydown", onEscape);
 
+  const onVisibilityChange = () => {
+    if (document.hidden) {
+      busy = false;
+      animation?.progress(1);
+      lastMoveAt = 0;
+    }
+  };
+
+  document.addEventListener("visibilitychange", onVisibilityChange);
+
   trigger = ScrollTrigger.create({
     trigger: section,
 
     start: () => `top top+=${getHeader()}`,
 
-    end: () =>
-      `+=${Math.max(480, window.innerHeight)}`,
+    end: () => `+=${Math.max(480, window.innerHeight)}`,
 
     pin: true,
     pinSpacing: true,
@@ -468,7 +471,7 @@ function createPinnedStory({
       if (active && !releasing) {
         trigger.scroll(trigger.start + 2);
       }
-    }
+    },
   });
 
   const recoverEntry = () => {
@@ -481,25 +484,16 @@ function createPinnedStory({
     }
   };
 
-  window.addEventListener(
-    "scroll",
-    recoverEntry,
-    { passive: true }
-  );
+  window.addEventListener("scroll", recoverEntry, { passive: true });
 
   const activateInitialChapter = () => {
-    if (
-      active ||
-      window.scrollY > trigger.start + 4
-    ) {
+    if (active || window.scrollY > trigger.start + 4) {
       return;
     }
 
     const bounds = section.getBoundingClientRect();
 
-    if (
-      Math.abs(bounds.top - getHeader()) < 12
-    ) {
+    if (Math.abs(bounds.top - getHeader()) < 12) {
       enter(false);
     }
   };
@@ -507,28 +501,15 @@ function createPinnedStory({
   requestAnimationFrame(activateInitialChapter);
 
   return () => {
-    if (gestureQuietTimer) {
-      clearTimeout(gestureQuietTimer);
-    }
-
     if (releaseTimer) {
       clearTimeout(releaseTimer);
     }
 
-    document.removeEventListener(
-      "visibilitychange",
-      onVisibilityChange
-    );
+    document.removeEventListener("visibilitychange", onVisibilityChange);
 
-    window.removeEventListener(
-      "keydown",
-      onEscape
-    );
+    window.removeEventListener("keydown", onEscape);
 
-    window.removeEventListener(
-      "scroll",
-      recoverEntry
-    );
+    window.removeEventListener("scroll", recoverEntry);
 
     cancelAnimationFrame(entryFrame);
 
@@ -548,10 +529,7 @@ function DimensionVisual({ index }: { index: number }) {
         <span>portfolio.tsx</span>
       </div>
 
-      <div
-        className="home-code-lines"
-        aria-hidden="true"
-      >
+      <div className="home-code-lines" aria-hidden="true">
         <span>
           <b>01</b>
           <em>const</em> engineer = {"{"}
@@ -589,21 +567,15 @@ function DimensionVisual({ index }: { index: number }) {
     </div>,
 
     <div className="home-venture" key="venture">
-      <span className="home-venture-node home-venture-one">
-        IDEA
-      </span>
+      <span className="home-venture-node home-venture-one">IDEA</span>
 
       <span className="home-venture-connector" />
 
-      <span className="home-venture-node home-venture-two">
-        BUILD
-      </span>
+      <span className="home-venture-node home-venture-two">BUILD</span>
 
       <span className="home-venture-connector" />
 
-      <span className="home-venture-node home-venture-three">
-        GROW
-      </span>
+      <span className="home-venture-node home-venture-three">GROW</span>
 
       <span className="home-venture-pulse" />
     </div>,
@@ -617,19 +589,13 @@ function DimensionVisual({ index }: { index: number }) {
         <div className="home-creative-square" />
       </div>
 
-      <div className="home-creative-cursor">
-        ✦
-      </div>
+      <div className="home-creative-cursor">✦</div>
     </div>,
 
     <div className="home-strategy" key="strategy">
       <div className="home-strategy-axis" />
 
-      <svg
-        viewBox="0 0 360 240"
-        fill="none"
-        aria-hidden="true"
-      >
+      <svg viewBox="0 0 360 240" fill="none" aria-hidden="true">
         <path
           d="M22 202 L92 160 L152 178 L218 100 L280 116 L340 32"
           stroke="white"
@@ -648,15 +614,11 @@ function DimensionVisual({ index }: { index: number }) {
         </g>
       </svg>
 
-      <span>
-        INSIGHT → DIRECTION → IMPACT
-      </span>
+      <span>INSIGHT → DIRECTION → IMPACT</span>
     </div>,
 
     <div className="home-educator" key="educator">
-      <div className="home-educator-source">
-        KNOWLEDGE
-      </div>
+      <div className="home-educator-source">KNOWLEDGE</div>
 
       <div className="home-educator-stem" />
 
@@ -666,17 +628,14 @@ function DimensionVisual({ index }: { index: number }) {
         <span>GROW</span>
       </div>
 
-      <div className="home-educator-caption">
-        IDEAS MULTIPLY WHEN SHARED
-      </div>
-    </div>
+      <div className="home-educator-caption">IDEAS MULTIPLY WHEN SHARED</div>
+    </div>,
   ];
 
   return (
     <div
       className={`home-dimension-visual home-visual-${index + 1}`}
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       {lines[index]}
     </div>
   );
@@ -687,11 +646,11 @@ export default function Home() {
   const openingRef = useRef<HTMLElement>(null);
   const dimensionsRef = useRef<HTMLElement>(null);
 
-  const portraitRefs = useRef<
-    (HTMLImageElement | null)[]
-  >([]);
+  const portraitRefs = useRef<(HTMLImageElement | null)[]>([]);
 
   const openingCounterRef = useRef<HTMLSpanElement>(null);
+
+  const entrancePlayedRef = useRef(false);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -703,11 +662,8 @@ export default function Home() {
     }
 
     const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches ||
-      document.documentElement.dataset.reduceMotion ===
-        "true";
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      document.documentElement.dataset.reduceMotion === "true";
 
     if (reducedMotion) {
       root.classList.add("home-reduced-motion");
@@ -718,17 +674,173 @@ export default function Home() {
     }
 
     const context = gsap.context(() => {
-      const openingPanels =
-        gsap.utils.toArray<HTMLElement>(
-          ".home-opening-slide",
-          opening
+      const playEntrance = () => {
+        if (entrancePlayedRef.current) return;
+
+        entrancePlayedRef.current = true;
+
+        const portrait = root.querySelector<HTMLElement>(
+          ".home-portrait-stack",
         );
 
-      const dimensionPanels =
-        gsap.utils.toArray<HTMLElement>(
-          ".home-dimension-panel",
-          dimensionSection
-        );
+        const intro = root.querySelector<HTMLElement>(".home-hero-intro");
+
+        const top = root.querySelector<HTMLElement>(".home-opening-top");
+
+        const bottom = root.querySelector<HTMLElement>(".home-opening-bottom");
+
+        if (!intro) return;
+
+        const eyebrow = intro.querySelector(".home-eyebrow");
+        const hello = intro.querySelector(".home-hello");
+        const title = intro.querySelector("h1");
+        const description = intro.querySelector(".home-hero-description");
+        const links = intro.querySelector(".home-hero-links");
+
+        const timeline = gsap.timeline({
+          defaults: {
+            ease: "power3.out",
+          },
+        });
+
+        if (portrait) {
+          timeline.fromTo(
+            portrait,
+            {
+              autoAlpha: 0,
+              scale: 1.075,
+            },
+            {
+              autoAlpha: 1,
+              scale: 1,
+              duration: 1.5,
+            },
+            0,
+          );
+        }
+
+        if (top) {
+          timeline.fromTo(
+            top,
+            {
+              autoAlpha: 0,
+              y: -12,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.8,
+            },
+            0.25,
+          );
+        }
+
+        if (eyebrow) {
+          timeline.fromTo(
+            eyebrow,
+            {
+              autoAlpha: 0,
+              y: 12,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.65,
+            },
+            0.35,
+          );
+        }
+
+        if (hello) {
+          timeline.fromTo(
+            hello,
+            {
+              autoAlpha: 0,
+              y: 20,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.75,
+            },
+            0.45,
+          );
+        }
+
+        if (title) {
+          timeline.fromTo(
+            title,
+            {
+              autoAlpha: 0,
+              y: 50,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 1.05,
+            },
+            0.55,
+          );
+        }
+
+        if (description) {
+          timeline.fromTo(
+            description,
+            {
+              autoAlpha: 0,
+              y: 20,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.8,
+            },
+            0.95,
+          );
+        }
+
+        if (links) {
+          timeline.fromTo(
+            links,
+            {
+              autoAlpha: 0,
+              y: 15,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.75,
+            },
+            1.1,
+          );
+        }
+
+        if (bottom) {
+          timeline.fromTo(
+            bottom,
+            {
+              autoAlpha: 0,
+              y: 10,
+            },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.7,
+            },
+            1.2,
+          );
+        }
+      };
+
+      const openingPanels = gsap.utils.toArray<HTMLElement>(
+        ".home-opening-slide",
+        opening,
+      );
+
+      const dimensionPanels = gsap.utils.toArray<HTMLElement>(
+        ".home-dimension-panel",
+        dimensionSection,
+      );
 
       const destroyOpening = createPinnedStory({
         section: opening,
@@ -737,28 +849,32 @@ export default function Home() {
 
         onChange: (index) => {
           if (openingCounterRef.current) {
-            openingCounterRef.current.textContent =
-              `${String(index + 1).padStart(2, "0")} / ${String(openingPanels.length).padStart(2, "0")}`;
+            openingCounterRef.current.textContent = `${String(index + 1).padStart(2, "0")} / ${String(openingPanels.length).padStart(2, "0")}`;
           }
-        }
+        },
       });
+
+      const shouldPlayEntrance = window.scrollY < window.innerHeight * 0.5;
+
+      if (shouldPlayEntrance) {
+        requestAnimationFrame(() => {
+          playEntrance();
+        });
+      }
 
       const destroyDimensions = createPinnedStory({
         section: dimensionSection,
-        panels: dimensionPanels
+        panels: dimensionPanels,
       });
 
       gsap.utils
-        .toArray<HTMLElement>(
-          ".home-reveal",
-          root
-        )
+        .toArray<HTMLElement>(".home-reveal", root)
         .forEach((element) => {
           gsap.fromTo(
             element,
             {
               autoAlpha: 0,
-              y: 18
+              y: 18,
             },
             {
               autoAlpha: 1,
@@ -769,16 +885,13 @@ export default function Home() {
               scrollTrigger: {
                 trigger: element,
                 start: "top 90%",
-                once: true
-              }
-            }
+                once: true,
+              },
+            },
           );
         });
 
-      const ending =
-        root.querySelector<HTMLElement>(
-          ".home-ending"
-        );
+      const ending = root.querySelector<HTMLElement>(".home-ending");
 
       if (ending) {
         gsap.fromTo(
@@ -787,7 +900,7 @@ export default function Home() {
             "--ending-bg": "#0d0d0d",
             "--ending-fg": "#f5f5f5",
             "--ending-muted": "#a3a3a3",
-            "--ending-line": "#f5f5f5"
+            "--ending-line": "#f5f5f5",
           },
           {
             "--ending-bg": "#f0f0ee",
@@ -801,15 +914,14 @@ export default function Home() {
               start: "top 85%",
               end: "top 18%",
               scrub: 0.75,
-              invalidateOnRefresh: true
-            }
-          }
+              invalidateOnRefresh: true,
+            },
+          },
         );
       }
 
       const images = portraitRefs.current.filter(
-        (image): image is HTMLImageElement =>
-          image !== null
+        (image): image is HTMLImageElement => image !== null,
       );
 
       const refresh = () => {
@@ -818,11 +930,7 @@ export default function Home() {
 
       images.forEach((image) => {
         if (!image.complete) {
-          image.addEventListener(
-            "load",
-            refresh,
-            { once: true }
-          );
+          image.addEventListener("load", refresh, { once: true });
         }
       });
 
@@ -830,10 +938,7 @@ export default function Home() {
 
       return () => {
         images.forEach((image) => {
-          image.removeEventListener(
-            "load",
-            refresh
-          );
+          image.removeEventListener("load", refresh);
         });
 
         destroyOpening?.();
@@ -847,52 +952,33 @@ export default function Home() {
   }, []);
 
   return (
-    <div
-      className="isindu-home-v2"
-      ref={rootRef}
-    >
-      <section
-        className="home-opening"
-        ref={openingRef}
-      >
+    <div className="isindu-home-v2" ref={rootRef}>
+      <section className="home-opening" ref={openingRef}>
         <div className="home-opening-inner">
           <div className="home-opening-top">
             <span>ISINDU WIJESINGHE</span>
 
-            <span>
-              ONE MIND. MANY DIMENSIONS.
-            </span>
+            <span>ONE MIND. MANY DIMENSIONS.</span>
           </div>
 
           <div className="home-opening-stage">
             <div className="home-portrait-wrap">
               <div className="home-portrait-stack">
-                {PORTRAIT_IMAGES.map(
-                  (image, index) => (
-                    <img
-                      key={image}
-                      ref={(element) => {
-                        portraitRefs.current[index] =
-                          element;
-                      }}
-                      src={image}
-                      alt={
-                        index === 0
-                          ? "Isindu Wijesinghe"
-                          : ""
-                      }
-                      aria-hidden={index !== 0}
-                      className="home-portrait home-portrait-layer"
-                      loading="eager"
-                      fetchPriority={
-                        index === 0
-                          ? "high"
-                          : "auto"
-                      }
-                      draggable={false}
-                    />
-                  )
-                )}
+                {PORTRAIT_IMAGES.map((image, index) => (
+                  <img
+                    key={image}
+                    ref={(element) => {
+                      portraitRefs.current[index] = element;
+                    }}
+                    src={image}
+                    alt={index === 0 ? "Isindu Wijesinghe" : ""}
+                    aria-hidden={index !== 0}
+                    className="home-portrait home-portrait-layer"
+                    loading="eager"
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    draggable={false}
+                  />
+                ))}
               </div>
 
               <span className="home-portrait-side">
@@ -906,9 +992,7 @@ export default function Home() {
                   SOFTWARE ENGINEER / ENTREPRENEUR / CREATIVE
                 </p>
 
-                <p className="home-hello">
-                  Hello, I'm
-                </p>
+                <p className="home-hello">Hello, I'm</p>
 
                 <h1>
                   Isindu
@@ -917,8 +1001,8 @@ export default function Home() {
                 </h1>
 
                 <p className="home-hero-description">
-                  Building at the intersection of technology,
-                  creativity, and ambition.
+                  Building at the intersection of technology, creativity, and
+                  ambition.
                 </p>
 
                 <div className="home-hero-links">
@@ -937,16 +1021,13 @@ export default function Home() {
               {statements.map((statement) => (
                 <div
                   className="home-opening-slide home-opening-quote"
-                  key={statement.number}
-                >
+                  key={statement.number}>
                   <span className="home-quote-number">
                     {statement.number} / 05
                   </span>
 
                   <h2>
-                    <span className="home-story-line">
-                      {statement.first}
-                    </span>
+                    <span className="home-story-line">{statement.first}</span>
 
                     <span className="home-story-line home-story-line-muted">
                       {statement.second}
@@ -956,14 +1037,10 @@ export default function Home() {
               ))}
 
               <div className="home-opening-slide home-opening-final">
-                <span className="home-quote-number">
-                  THE PHILOSOPHY
-                </span>
+                <span className="home-quote-number">THE PHILOSOPHY</span>
 
                 <h2>
-                  <span className="home-story-line">
-                    One mind.
-                  </span>
+                  <span className="home-story-line">One mind.</span>
 
                   <span className="home-story-line home-story-line-muted">
                     Many dimensions.
@@ -971,31 +1048,21 @@ export default function Home() {
                 </h2>
 
                 <p className="home-opening-final-description">
-                  Not one title. Not one path.
-                  A journey shaped by curiosity.
+                  Not one title. Not one path. A journey shaped by curiosity.
                 </p>
               </div>
             </div>
           </div>
 
           <div className="home-opening-bottom">
-            <span>
-              PERSONAL PORTFOLIO / 2026
-            </span>
+            <span>PERSONAL PORTFOLIO / 2026</span>
 
             <div>
-              <span ref={openingCounterRef}>
-                01 / 07
-              </span>
+              <span ref={openingCounterRef}>01 / 07</span>
 
-              <span>
-                SCROLL TO EXPLORE
-              </span>
+              <span>SCROLL TO EXPLORE</span>
 
-              <ArrowDown
-                size={15}
-                strokeWidth={1.4}
-              />
+              <ArrowDown size={15} strokeWidth={1.4} />
             </div>
           </div>
         </div>
@@ -1005,9 +1072,7 @@ export default function Home() {
         <div className="home-container">
           <div className="home-philosophy-grid">
             <div className="home-reveal">
-              <p className="home-eyebrow">
-                BEYOND THE EXPECTED
-              </p>
+              <p className="home-eyebrow">BEYOND THE EXPECTED</p>
 
               <h2>
                 I don't believe
@@ -1020,20 +1085,16 @@ export default function Home() {
 
             <div className="home-philosophy-copy home-reveal">
               <p>
-                Engineering gives me the ability to build.
-                Design gives those ideas character.
-                Business gives them direction.
+                Engineering gives me the ability to build. Design gives those
+                ideas character. Business gives them direction.
               </p>
 
               <p>
-                What interests me most is what happens when
-                these different disciplines come together.
+                What interests me most is what happens when these different
+                disciplines come together.
               </p>
 
-              <Link
-                to="/who-am-i"
-                className="home-text-link"
-              >
+              <Link to="/who-am-i" className="home-text-link">
                 More about me
                 <ArrowUpRight size={17} />
               </Link>
@@ -1042,27 +1103,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section
-        className="home-dimensions"
-        ref={dimensionsRef}
-      >
+      <section className="home-dimensions" ref={dimensionsRef}>
         <div className="home-dimensions-inner">
           <div className="home-dimensions-top">
-            <span className="home-dimensions-kicker">
-              FIVE DIMENSIONS
-            </span>
+            <span className="home-dimensions-kicker">FIVE DIMENSIONS</span>
 
-            <span>
-              FIVE PERSPECTIVES. ONE JOURNEY.
-            </span>
+            <span>FIVE PERSPECTIVES. ONE JOURNEY.</span>
           </div>
 
           <div className="home-dimensions-stage">
             {dimensions.map((dimension, index) => (
-              <article
-                className="home-dimension-panel"
-                key={dimension.number}
-              >
+              <article className="home-dimension-panel" key={dimension.number}>
                 <DimensionVisual index={index} />
 
                 <div className="home-dimension-content">
@@ -1087,8 +1138,7 @@ export default function Home() {
 
                 <span
                   className="home-dimension-background-number"
-                  aria-hidden="true"
-                >
+                  aria-hidden="true">
                   {dimension.number}
                 </span>
               </article>
@@ -1096,13 +1146,9 @@ export default function Home() {
           </div>
 
           <div className="home-dimensions-bottom">
-            <span>
-              ISINDU WIJESINGHE
-            </span>
+            <span>ISINDU WIJESINGHE</span>
 
-            <span>
-              CONTINUE THE JOURNEY ↓
-            </span>
+            <span>CONTINUE THE JOURNEY ↓</span>
           </div>
         </div>
       </section>
@@ -1110,9 +1156,7 @@ export default function Home() {
       <section className="home-ending">
         <div className="home-container">
           <div className="home-ending-content home-reveal">
-            <p className="home-eyebrow">
-              THE NEXT CHAPTER IS YOURS
-            </p>
+            <p className="home-eyebrow">THE NEXT CHAPTER IS YOURS</p>
 
             <h2>
               Your next idea.
@@ -1122,20 +1166,13 @@ export default function Home() {
 
             <div className="home-ending-row">
               <p>
-                An idea, a challenge, or an opportunity
-                worth exploring? Let's start a conversation.
+                An idea, a challenge, or an opportunity worth exploring? Let's
+                start a conversation.
               </p>
 
-              <Link
-                to="/hire-me"
-                className="home-ending-link"
-              >
+              <Link to="/hire-me" className="home-ending-link">
                 Get in touch
-
-                <ArrowUpRight
-                  size={20}
-                  strokeWidth={1.4}
-                />
+                <ArrowUpRight size={20} strokeWidth={1.4} />
               </Link>
             </div>
           </div>

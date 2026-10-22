@@ -2453,3 +2453,31 @@ html[data-reduce-motion="true"] .home-ending {
     max-height: 24%;
   }
 }
+
+/* Homepage entrance rendering */
+
+.isindu-home-v2 .home-opening {
+  isolation: isolate;
+}
+
+.isindu-home-v2 .home-portrait-stack {
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+.isindu-home-v2 .home-hero-intro h1,
+.isindu-home-v2 .home-hero-intro .home-hello,
+.isindu-home-v2 .home-hero-intro .home-hero-description {
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .isindu-home-v2 .home-portrait-stack,
+  .isindu-home-v2 .home-hero-intro *,
+  .isindu-home-v2 .home-opening-top,
+  .isindu-home-v2 .home-opening-bottom {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}
