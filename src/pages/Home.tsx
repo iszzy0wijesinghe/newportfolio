@@ -8,6 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Observer } from "gsap/Observer";
 import "./Home.css";
 
+import { getMotionSettings } from "../lib/motion";
+
 gsap.registerPlugin(ScrollTrigger, Observer);
 
 const PORTRAIT_IMAGES = [
@@ -661,13 +663,11 @@ export default function Home() {
       return;
     }
 
-    const reducedMotion =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      document.documentElement.dataset.reduceMotion === "true";
+    const motion = getMotionSettings();
 
-    if (reducedMotion) {
-      root.classList.add("home-reduced-motion");
+    root.classList.toggle("home-reduced-motion", motion.reduced);
 
+    if (motion.reduced) {
       return () => {
         root.classList.remove("home-reduced-motion");
       };

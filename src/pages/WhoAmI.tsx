@@ -1,3 +1,5 @@
+/** @format */
+
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
@@ -6,6 +8,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { careerJourney } from "../content/experience";
 import { profile } from "../content/profile";
 import "./WhoAmI.css";
+
+import { getMotionSettings } from "../lib/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,8 +102,7 @@ const education = [
   {
     period: "2023 — PRESENT",
     qualification: "BSc in Information Technology",
-    institution:
-      "Sri Lanka Institute of Information Technology (SLIIT)",
+    institution: "Sri Lanka Institute of Information Technology (SLIIT)",
     number: "01",
   },
   {
@@ -128,11 +131,9 @@ export default function WhoAmI() {
     const page = pageRef.current;
     if (!page) return;
 
-    const reducedMotion =
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      document.documentElement.dataset.reduceMotion === "true";
+    const motion = getMotionSettings();
 
-    if (reducedMotion) return;
+    if (motion.reduced) return;
 
     const context = gsap.context(() => {
       const hero = heroRef.current;
@@ -151,7 +152,7 @@ export default function WhoAmI() {
               end: "bottom top",
               scrub: 1,
             },
-          }
+          },
         );
 
         gsap.fromTo(
@@ -166,7 +167,7 @@ export default function WhoAmI() {
               end: "bottom top",
               scrub: 1.4,
             },
-          }
+          },
         );
 
         gsap.to(".who-hero-heading", {
@@ -201,35 +202,31 @@ export default function WhoAmI() {
                 start: "top 88%",
                 once: true,
               },
-            }
+            },
           );
         });
 
-      gsap.utils
-        .toArray<HTMLElement>(".who-perspective")
-        .forEach((element) => {
-          const number = element.querySelector(
-            ".who-perspective-number"
-          );
+      gsap.utils.toArray<HTMLElement>(".who-perspective").forEach((element) => {
+        const number = element.querySelector(".who-perspective-number");
 
-          if (!number) return;
+        if (!number) return;
 
-          gsap.fromTo(
-            number,
-            { x: -45, opacity: 0 },
-            {
-              x: 0,
-              opacity: 1,
-              duration: 1,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: element,
-                start: "top 78%",
-                once: true,
-              },
-            }
-          );
-        });
+        gsap.fromTo(
+          number,
+          { x: -45, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: element,
+              start: "top 78%",
+              once: true,
+            },
+          },
+        );
+      });
 
       if (timelineRef.current && timelineProgressRef.current) {
         gsap.fromTo(
@@ -244,91 +241,83 @@ export default function WhoAmI() {
               end: "bottom 65%",
               scrub: 0.6,
             },
-          }
+          },
         );
       }
 
-      gsap.utils
-        .toArray<HTMLElement>(".who-timeline-item")
-        .forEach((item) => {
-          ScrollTrigger.create({
-            trigger: item,
-            start: "top 72%",
-            end: "bottom 30%",
-            toggleClass: {
-              targets: item,
-              className: "is-active",
+      gsap.utils.toArray<HTMLElement>(".who-timeline-item").forEach((item) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top 72%",
+          end: "bottom 30%",
+          toggleClass: {
+            targets: item,
+            className: "is-active",
+          },
+        });
+      });
+
+      gsap.utils.toArray<HTMLElement>(".who-venture").forEach((venture) => {
+        const logo = venture.querySelector<HTMLElement>(".who-venture-logo");
+
+        const year = venture.querySelector<HTMLElement>(".who-venture-year");
+
+        const visual = venture.querySelector<HTMLElement>(
+          ".who-venture-visual",
+        );
+
+        if (logo) {
+          gsap.fromTo(
+            logo,
+            { yPercent: 18, scale: 0.9 },
+            {
+              yPercent: -18,
+              scale: 1.06,
+              ease: "none",
+              scrollTrigger: {
+                trigger: venture,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1.2,
+              },
             },
-          });
-        });
-
-      gsap.utils
-        .toArray<HTMLElement>(".who-venture")
-        .forEach((venture) => {
-          const logo = venture.querySelector<HTMLElement>(
-            ".who-venture-logo"
           );
+        }
 
-          const year = venture.querySelector<HTMLElement>(
-            ".who-venture-year"
+        if (year) {
+          gsap.fromTo(
+            year,
+            { yPercent: -35 },
+            {
+              yPercent: 35,
+              ease: "none",
+              scrollTrigger: {
+                trigger: venture,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1.8,
+              },
+            },
           );
+        }
 
-          const visual = venture.querySelector<HTMLElement>(
-            ".who-venture-visual"
+        if (visual) {
+          gsap.fromTo(
+            visual,
+            { backgroundPosition: "50% 0%" },
+            {
+              backgroundPosition: "50% 100%",
+              ease: "none",
+              scrollTrigger: {
+                trigger: venture,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1.5,
+              },
+            },
           );
-
-          if (logo) {
-            gsap.fromTo(
-              logo,
-              { yPercent: 18, scale: 0.9 },
-              {
-                yPercent: -18,
-                scale: 1.06,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: venture,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: 1.2,
-                },
-              }
-            );
-          }
-
-          if (year) {
-            gsap.fromTo(
-              year,
-              { yPercent: -35 },
-              {
-                yPercent: 35,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: venture,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: 1.8,
-                },
-              }
-            );
-          }
-
-          if (visual) {
-            gsap.fromTo(
-              visual,
-              { backgroundPosition: "50% 0%" },
-              {
-                backgroundPosition: "50% 100%",
-                ease: "none",
-                scrollTrigger: {
-                  trigger: venture,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: 1.5,
-                },
-              }
-            );
-          }
-        });
+        }
+      });
 
       gsap.utils
         .toArray<HTMLElement>(".who-venture-statement")
@@ -349,7 +338,7 @@ export default function WhoAmI() {
                 start: "top 85%",
                 once: true,
               },
-            }
+            },
           );
         });
     }, page);
@@ -370,10 +359,7 @@ export default function WhoAmI() {
 
         <div className="who-hero-shade" />
 
-        <span
-          className="who-hero-background-word"
-          aria-hidden="true"
-        >
+        <span className="who-hero-background-word" aria-hidden="true">
           BECOMING
         </span>
 
@@ -384,9 +370,7 @@ export default function WhoAmI() {
           </div>
 
           <div className="who-hero-heading">
-            <p className="who-eyebrow">
-              A STORY STILL BEING WRITTEN
-            </p>
+            <p className="who-eyebrow">A STORY STILL BEING WRITTEN</p>
 
             <h1>
               I was never
@@ -431,22 +415,19 @@ export default function WhoAmI() {
 
             <div className="who-introduction-copy" data-who-reveal>
               <p className="who-introduction-lead">
-                I'm {profile.name}. A software engineer,
-                creative thinker, and entrepreneur based in
-                Sri Lanka.
+                I'm {profile.name}. A software engineer, creative thinker, and
+                entrepreneur based in Sri Lanka.
               </p>
 
               <p>
-                My journey didn't begin with a single plan.
-                It grew from curiosity—from discovering how
-                things look, how they work, and how they can
-                become something meaningful.
+                My journey didn't begin with a single plan. It grew from
+                curiosity—from discovering how things look, how they work, and
+                how they can become something meaningful.
               </p>
 
               <p>
-                Somewhere between design, storytelling,
-                engineering, and business, I realized that
-                the most interesting ideas often exist
+                Somewhere between design, storytelling, engineering, and
+                business, I realized that the most interesting ideas often exist
                 between disciplines.
               </p>
 
@@ -468,9 +449,7 @@ export default function WhoAmI() {
           </div>
 
           <div className="who-mindset-heading" data-who-reveal>
-            <p className="who-eyebrow">
-              THREE PERSPECTIVES. ONE MINDSET.
-            </p>
+            <p className="who-eyebrow">THREE PERSPECTIVES. ONE MINDSET.</p>
 
             <h2>
               Everything I learned
@@ -482,9 +461,7 @@ export default function WhoAmI() {
           <div className="who-perspectives">
             {perspectives.map((item) => (
               <article className="who-perspective" key={item.number}>
-                <div className="who-perspective-number">
-                  {item.number}
-                </div>
+                <div className="who-perspective-number">{item.number}</div>
 
                 <div className="who-perspective-content">
                   <span className="who-eyebrow" data-who-reveal>
@@ -514,9 +491,7 @@ export default function WhoAmI() {
           </div>
 
           <div className="who-journey-heading" data-who-reveal>
-            <p className="who-eyebrow">
-              A JOURNEY OF EXPLORATION
-            </p>
+            <p className="who-eyebrow">A JOURNEY OF EXPLORATION</p>
 
             <h2>
               Every chapter
@@ -525,9 +500,8 @@ export default function WhoAmI() {
             </h2>
 
             <p>
-              From my first creative projects to building
-              enterprise software, each experience has
-              shaped the way I approach the next challenge.
+              From my first creative projects to building enterprise software,
+              each experience has shaped the way I approach the next challenge.
             </p>
           </div>
 
@@ -542,19 +516,14 @@ export default function WhoAmI() {
             {careerJourney.map((item, index) => (
               <article
                 className={`who-timeline-item ${
-                  index % 2 === 0
-                    ? "who-timeline-left"
-                    : "who-timeline-right"
+                  index % 2 === 0 ? "who-timeline-left" : "who-timeline-right"
                 }`}
-                key={item.id}
-              >
+                key={item.id}>
                 <div className="who-timeline-node" />
 
                 <div className="who-timeline-card" data-who-reveal>
                   <div className="who-timeline-card-top">
-                    <span>
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
                     <span>{item.period}</span>
                   </div>
 
@@ -577,14 +546,10 @@ export default function WhoAmI() {
 
                   <h3>{item.role}</h3>
 
-                  <p className="who-timeline-summary">
-                    {item.summary}
-                  </p>
+                  <p className="who-timeline-summary">{item.summary}</p>
 
                   {item.current && (
-                    <span className="who-current-badge">
-                      CURRENT
-                    </span>
+                    <span className="who-current-badge">CURRENT</span>
                   )}
                 </div>
               </article>
@@ -616,9 +581,8 @@ export default function WhoAmI() {
 
             <div className="who-legacy-intro-bottom">
               <p>
-                Design. Cinema. Technology. Food.
-                Different industries, but the same
-                curiosity to create something meaningful.
+                Design. Cinema. Technology. Food. Different industries, but the
+                same curiosity to create something meaningful.
               </p>
 
               <span>2020 — PRESENT</span>
@@ -632,13 +596,9 @@ export default function WhoAmI() {
               className={`who-venture ${
                 index % 2 === 1 ? "who-venture-reverse" : ""
               }`}
-              key={venture.id}
-            >
+              key={venture.id}>
               <div className="who-venture-visual">
-                <span
-                  className="who-venture-year"
-                  aria-hidden="true"
-                >
+                <span className="who-venture-year" aria-hidden="true">
                   {venture.year}
                 </span>
 
@@ -664,14 +624,9 @@ export default function WhoAmI() {
 
                   <h3 data-who-reveal>{venture.name}</h3>
 
-                  <p className="who-venture-statement">
-                    {venture.statement}
-                  </p>
+                  <p className="who-venture-statement">{venture.statement}</p>
 
-                  <p
-                    className="who-venture-description"
-                    data-who-reveal
-                  >
+                  <p className="who-venture-description" data-who-reveal>
                     {venture.description}
                   </p>
 
@@ -695,9 +650,7 @@ export default function WhoAmI() {
           </div>
 
           <div className="who-education-heading" data-who-reveal>
-            <p className="who-eyebrow">
-              KNOWLEDGE NEVER STANDS STILL
-            </p>
+            <p className="who-eyebrow">KNOWLEDGE NEVER STANDS STILL</p>
 
             <h2>
               Learning isn't
@@ -711,26 +664,17 @@ export default function WhoAmI() {
               <article
                 className="who-education-item"
                 key={item.number}
-                data-who-reveal
-              >
-                <span className="who-education-number">
-                  {item.number}
-                </span>
+                data-who-reveal>
+                <span className="who-education-number">{item.number}</span>
 
                 <div>
-                  <span className="who-education-period">
-                    {item.period}
-                  </span>
+                  <span className="who-education-period">{item.period}</span>
 
                   <h3>{item.qualification}</h3>
                   <p>{item.institution}</p>
                 </div>
 
-                <ArrowUpRight
-                  size={22}
-                  strokeWidth={1.2}
-                  aria-hidden="true"
-                />
+                <ArrowUpRight size={22} strokeWidth={1.2} aria-hidden="true" />
               </article>
             ))}
           </div>
@@ -746,9 +690,7 @@ export default function WhoAmI() {
           </div>
 
           <div className="who-ending-content" data-who-reveal>
-            <p className="who-eyebrow">
-              STILL CURIOUS. STILL BUILDING.
-            </p>
+            <p className="who-eyebrow">STILL CURIOUS. STILL BUILDING.</p>
 
             <h2>
               This isn't
@@ -757,9 +699,8 @@ export default function WhoAmI() {
             </h2>
 
             <p>
-              There's always another idea to explore,
-              another problem to solve, and another
-              opportunity to create something meaningful.
+              There's always another idea to explore, another problem to solve,
+              and another opportunity to create something meaningful.
             </p>
 
             <div className="who-ending-links">
@@ -771,8 +712,7 @@ export default function WhoAmI() {
               <a
                 href={profile.resumeUrl}
                 download
-                className="who-ending-secondary"
-              >
+                className="who-ending-secondary">
                 Download résumé
                 <ArrowRight size={18} />
               </a>
